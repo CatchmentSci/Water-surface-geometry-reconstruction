@@ -37,10 +37,11 @@ The operational workflow used MATLAB R2024a on Comet and requires Parallel Compu
 |   |   |   |-- resubmit_missing_klt_analysis_jobs.sh
 |   |   |   |-- run_one_klt_analysis_case.sh
 |   |   |   `-- submit_klt_analysis_batch.sh
-|   |   |-- resubmit_missing_klt_jobs.sh
-|   |   |-- run_one_klt_case.sh
-|   |   |-- run_one_klt_case_ramlog.sh
-|   |   `-- submit_klt_syn.sh
+|   |   `-- syn
+|   |       |-- resubmit_missing_klt_jobs.sh
+|   |       |-- run_one_klt_case.sh
+|   |       |-- run_one_klt_case_ramlog.sh
+|   |       `-- submit_klt_syn.sh
 |   `-- solver
 |       |-- KLT_synthetic_truth_test_v3.m
 |       `-- KLT_wse_solver_paths_Apoint_block_jacobi_v5.m
@@ -59,7 +60,7 @@ The operational workflow used MATLAB R2024a on Comet and requires Parallel Compu
 
 Detailed instructions, software versions, and the mapping between scripts and paper figures will be added as the repository is populated.
 
-The scripts in `code/hpc` are exact copies of the operational Newcastle University Comet Slurm files and contain environment-specific paths. Update those paths for another system before submission. The real-video scripts are in `code/hpc/real`; their `sweep_limits.csv`, solver inputs, and optional checkpoints are supplied through the associated Zenodo dataset.
+The scripts in `code/hpc` are exact copies of the operational Newcastle University Comet Slurm files and contain environment-specific paths. Update those paths for another system before submission. Synthetic scripts are in `code/hpc/syn`, while real-video scripts are in `code/hpc/real`; their input data and optional checkpoints are supplied through the associated Zenodo dataset.
 
 The current synthetic workflow expects `synthetic_cases.csv` and four Zenodo solver-input files: `solver_inputs_0pt88.mat`, `solver_inputs_1pt10.mat`, `solver_inputs_1pt50.mat`, and `solver_inputs_1pt70.mat`. The RAM-logging worker contains the full 39-case mapping; the standard worker and submission lists are retained exactly as used on Comet for their selected operational runs. The older `solver_inputs_s1pt79.mat` experiment and restart-state files are not part of the current publication dataset.
 
