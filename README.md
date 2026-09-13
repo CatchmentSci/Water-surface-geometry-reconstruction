@@ -24,10 +24,17 @@ The analysis and figure-generation workflows use MATLAB. The required MATLAB rel
 ```text
 .
 |-- code
-|   |-- dependencies    # Supporting functions and third-party dependencies
+|   |-- dependencies
+|   |   `-- camera.m
 |   |-- figures         # Scripts used to reproduce paper figures
-|   |-- hpc             # High-performance computing scripts and configuration
-|   `-- solver          # Inverse-modelling and numerical solver code
+|   |-- hpc
+|   |   |-- resubmit_missing_klt_jobs.sh
+|   |   |-- run_one_klt_case.sh
+|   |   |-- run_one_klt_case_ramlog.sh
+|   |   `-- submit_klt_syn.sh
+|   `-- solver
+|       |-- KLT_synthetic_truth_test_v3.m
+|       `-- KLT_wse_solver_paths_Apoint_block_jacobi_v5.m
 |-- data                # Input and derived data required by the scripts
 |-- images              # Images used in this README or other documentation
 |-- LICENSE
@@ -42,6 +49,8 @@ The analysis and figure-generation workflows use MATLAB. The required MATLAB rel
 4. Run the script to reproduce the corresponding result or figure.
 
 Detailed instructions, software versions, and the mapping between scripts and paper figures will be added as the repository is populated.
+
+The scripts in `code/hpc` currently reflect the Newcastle University Comet Slurm environment and contain environment-specific paths. Update those paths for another system before submission.
 
 ## Licence
 

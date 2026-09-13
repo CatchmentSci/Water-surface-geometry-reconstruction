@@ -1,5 +1,7 @@
 # Dependencies
 
-Place supporting MATLAB functions and any redistributable third-party dependencies in this directory.
+| File | Purpose |
+|---|---|
+| `camera.m` | MATLAB camera-model class used to reconstruct camera objects stored in the solver-input MAT files. |
 
-For third-party material, record the source, version, licence, and any modifications made.
+Add this directory to the MATLAB path before running the synthetic-truth workflow. The provenance and licence of `camera.m` should be confirmed before public release.
