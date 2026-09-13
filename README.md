@@ -17,7 +17,7 @@ Visible patterns on river surfaces reflect waves, turbulence, and interactions w
 
 ## Prerequisites
 
-The analysis and figure-generation workflows use MATLAB. The required MATLAB release and any additional toolboxes will be documented here when the reproducibility package is finalised.
+The operational workflow used MATLAB R2024a on Comet and requires Parallel Computing Toolbox. MATLAB's dependency analyser confirms that the synthetic solver is otherwise self-contained by the files listed below.
 
 ## Repository structure
 
@@ -25,9 +25,18 @@ The analysis and figure-generation workflows use MATLAB. The required MATLAB rel
 .
 |-- code
 |   |-- dependencies
-|   |   `-- camera.m
+|   |   |-- KLT_applyAngleShift.m
+|   |   |-- KLT_wrapTo360_centerMedian.m
+|   |   |-- LMFnlsq.m
+|   |   |-- camera.m
+|   |   `-- voxelviewshed.m
 |   |-- figures         # Scripts used to reproduce paper figures
 |   |-- hpc
+|   |   |-- real
+|   |   |   |-- klt_analysis_case_lookup.tsv
+|   |   |   |-- resubmit_missing_klt_analysis_jobs.sh
+|   |   |   |-- run_one_klt_analysis_case.sh
+|   |   |   `-- submit_klt_analysis_batch.sh
 |   |   |-- resubmit_missing_klt_jobs.sh
 |   |   |-- run_one_klt_case.sh
 |   |   |-- run_one_klt_case_ramlog.sh
@@ -50,9 +59,9 @@ The analysis and figure-generation workflows use MATLAB. The required MATLAB rel
 
 Detailed instructions, software versions, and the mapping between scripts and paper figures will be added as the repository is populated.
 
-The scripts in `code/hpc` currently reflect the Newcastle University Comet Slurm environment and contain environment-specific paths. Update those paths for another system before submission.
+The scripts in `code/hpc` are exact copies of the operational Newcastle University Comet Slurm files and contain environment-specific paths. Update those paths for another system before submission. The real-video scripts are in `code/hpc/real`; their `sweep_limits.csv`, solver inputs, and optional checkpoints are supplied through the associated Zenodo dataset.
 
-The current synthetic workflow expects `synthetic_cases.csv` and four Zenodo solver-input files: `solver_inputs_0pt88.mat`, `solver_inputs_1pt10.mat`, `solver_inputs_1pt50.mat`, and `solver_inputs_1pt70.mat`. The worker scripts map all 39 data rows in that table to those files. The older `solver_inputs_s1pt79.mat` experiment and restart-state files are not part of the current publication dataset.
+The current synthetic workflow expects `synthetic_cases.csv` and four Zenodo solver-input files: `solver_inputs_0pt88.mat`, `solver_inputs_1pt10.mat`, `solver_inputs_1pt50.mat`, and `solver_inputs_1pt70.mat`. The RAM-logging worker contains the full 39-case mapping; the standard worker and submission lists are retained exactly as used on Comet for their selected operational runs. The older `solver_inputs_s1pt79.mat` experiment and restart-state files are not part of the current publication dataset.
 
 ## Licence
 

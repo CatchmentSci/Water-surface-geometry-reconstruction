@@ -7,4 +7,4 @@
 
 `KLT_synthetic_truth_test_v3` expects a case-definition CSV and a solver-input MAT file. Each MAT file must contain `app_in`, `camA_fullmodel`, `camA_first_fullmodel`, `xyzA_wse`, `xyzB_wse`, `aa`, and `wse_map`; `globalPolarity` is optional.
 
-The workflow was tested using MATLAB R2024a. It also requires the `camera` class in `../dependencies/camera.m`.
+The workflow was tested using MATLAB R2024a with Parallel Computing Toolbox. It requires all five files in `../dependencies`; see that directory's README for their roles.

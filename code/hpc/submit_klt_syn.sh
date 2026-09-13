@@ -4,7 +4,7 @@ set -euo pipefail
 
 LOGDIR="/mnt/nfs/home/nmp65/klt_slurm_logs"
 RUNTIMEDIR="/mnt/nfs/home/nmp65/klt_runtime_jobs"
-WORKER_SCRIPT="run_one_klt_case.sh"
+WORKER_SCRIPT="run_one_klt_case_ramlog.sh"
 
 mkdir -p "$LOGDIR" "$RUNTIMEDIR"
 
@@ -14,7 +14,10 @@ if [[ ! -f "$WORKER_SCRIPT" ]]; then
 fi
 
 # Excel-visible CSV rows to run. Row 1 is the header; the worker converts to MATLAB data-row index.
-S_IDS=(4 7 11 14 {16..24})
+# S_IDS=(4 7 11 14 {16..24})
+# S_IDS=(25)
+S_IDS=(4 8 21 25 29 34 38)
+# S_IDS=(28)
 
 for S_ID in "${S_IDS[@]}"
 do
