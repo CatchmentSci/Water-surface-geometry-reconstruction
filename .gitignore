@@ -1,0 +1,29 @@
+# MATLAB generated files
+*.asv
+*.autosave
+*.m~
+*.mex*
+slprj/
+codegen/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary and editor files
+*.tmp
+*.temp
+*.bak
+~$*
+.vscode/
+
+# LaTeX build products
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
