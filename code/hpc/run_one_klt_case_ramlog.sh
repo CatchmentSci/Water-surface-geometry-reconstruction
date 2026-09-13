@@ -326,13 +326,13 @@ echo "Running synthetic Excel row ${S_ID}"
 echo "Using MATLAB testConfig.caseCsvRow=${CASE_CSV_ROW} (Excel row ${S_ID} minus header row)"
 
 # Select the correct input MAT file based on Excel-visible CSV row number.
-if [[ "$S_ID" -ge 2 && "$S_ID" -le 8 ]]; then
+if [[ "$S_ID" -ge 2 && "$S_ID" -le 10 ]]; then
     INPUT_MAT_FILE="${SYN_DIR}/solver_inputs_0pt88.mat"
-elif [[ "$S_ID" -ge 9 && "$S_ID" -le 15 ]]; then
+elif [[ "$S_ID" -ge 11 && "$S_ID" -le 19 ]]; then
     INPUT_MAT_FILE="${SYN_DIR}/solver_inputs_1pt50.mat"
-elif [[ "$S_ID" -ge 16 && "$S_ID" -le 24 ]]; then
+elif [[ "$S_ID" -ge 20 && "$S_ID" -le 31 ]]; then
     INPUT_MAT_FILE="${SYN_DIR}/solver_inputs_1pt70.mat"
-elif [[ "$S_ID" -ge 25 && "$S_ID" -le 31 ]]; then
+elif [[ "$S_ID" -ge 32 && "$S_ID" -le 40 ]]; then
     INPUT_MAT_FILE="${SYN_DIR}/solver_inputs_1pt10.mat"
 else
     echo "ERROR: Invalid Excel row S_ID: $S_ID"

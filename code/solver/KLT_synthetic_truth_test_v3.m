@@ -49,7 +49,6 @@ end
 % consistent with KLT_S_ID, while still allowing explicit testConfig fields
 % to override the environment for local/manual runs.
 defaultCaseCsvFile = '/mnt/nfs/home/nmp65/Downloads/v1_current/Syn/synthetic_cases.csv';
-defaultCaseCsvFile = 'D:\OneDrive - Newcastle University\Documents - WSE Project\General\Dart\Syn\synthetic_cases.csv';
 
 if ~isfield(testConfig, 'caseCsvFile') || isempty(testConfig.caseCsvFile)
     envCaseCsvFile = strtrim(getenv('KLT_CASE_CSV_FILE'));

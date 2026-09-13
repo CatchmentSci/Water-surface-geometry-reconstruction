@@ -52,6 +52,8 @@ Detailed instructions, software versions, and the mapping between scripts and pa
 
 The scripts in `code/hpc` currently reflect the Newcastle University Comet Slurm environment and contain environment-specific paths. Update those paths for another system before submission.
 
+The current synthetic workflow expects `synthetic_cases.csv` and four Zenodo solver-input files: `solver_inputs_0pt88.mat`, `solver_inputs_1pt10.mat`, `solver_inputs_1pt50.mat`, and `solver_inputs_1pt70.mat`. The worker scripts map all 39 data rows in that table to those files. The older `solver_inputs_s1pt79.mat` experiment and restart-state files are not part of the current publication dataset.
+
 ## Licence
 
 The software in this repository is released under the [MIT License](LICENSE). Data may be subject to additional terms documented alongside the relevant files.
