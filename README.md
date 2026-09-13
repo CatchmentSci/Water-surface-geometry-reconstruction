@@ -1,6 +1,6 @@
 # Water-surface geometry reconstruction for non-contact river flow monitoring through monocular imagery and inverse modeling
 
-This repository contains the data and MATLAB code used to reproduce the analyses and figures presented in the associated research paper by Matthew T. Perks and Giuseppe Dolcetti.
+This repository contains the data and MATLAB code used to reproduce the analyses and figures presented in the associated research paper by Matthew T. Perks and Giulio Dolcetti.
 
 The study investigates how water-surface geometry and dynamics observed in monocular imagery can be used to estimate river-flow characteristics, including wavelength, amplitude, depth, and velocity.
 
