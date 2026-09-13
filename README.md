@@ -26,6 +26,7 @@ The analysis and figure-generation workflows use MATLAB. The required MATLAB rel
 |-- code
 |   |-- dependencies    # Supporting functions and third-party dependencies
 |   |-- figures         # Scripts used to reproduce paper figures
+|   |-- hpc             # High-performance computing scripts and configuration
 |   `-- solver          # Inverse-modelling and numerical solver code
 |-- data                # Input and derived data required by the scripts
 |-- images              # Images used in this README or other documentation
