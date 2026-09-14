@@ -18,6 +18,9 @@ desktop.ini
 ~$*
 .vscode/
 
+# Generated figure products
+code/figures/*/output/
+
 # LaTeX build products
 *.aux
 *.bbl
