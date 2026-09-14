@@ -1,69 +1,141 @@
 # Water-surface geometry reconstruction for non-contact river flow monitoring through monocular imagery and inverse modeling
 
-This repository contains the data and MATLAB code used to reproduce the analyses and figures presented in the associated research paper by Matthew T. Perks and Giulio Dolcetti.
+This repository contains the MATLAB code used to reproduce the numerical
+analyses, figures, and tables supporting the associated research paper by
+Matthew T. Perks and Giulio Dolcetti.
 
-The study investigates how water-surface geometry and dynamics observed in monocular imagery can be used to estimate river-flow characteristics, including wavelength, amplitude, depth, and velocity.
+The study reconstructs water-surface geometry (WSG) from apparent flow paths
+in monocular imagery and uses the recovered surface undulations to estimate
+wave properties, surface velocity, and flow depth.
 
-## Contents
+## Repository status
 
-- [About the project](#about-the-project)
-- [Prerequisites](#prerequisites)
-- [Repository structure](#repository-structure)
-- [How to use](#how-to-use)
+Reproducibility workflows are currently available for:
 
-## About the project
+| Paper item | Repository location | Status |
+| --- | --- | --- |
+| Figure 1 | `code/figures/figure_01` | Complete; deterministic vector sampling |
+| Figure 2 | `code/figures/figure_02` | Final schematic deposited |
+| Figure 4 | `code/figures/figure_04` | Complete |
+| Figure 5 | `code/figures/figure_05` | Complete |
+| Figure 6 | `code/figures/figure_06` | Complete |
+| Figure 8 | `code/figures/figure_08` | Complete |
+| Figure 9 | `code/figures/figure_09` | Complete |
+| Table 3 | `code/tables/table_03` | Complete |
+| Table B1 | `code/tables/table_b1` | Complete |
+| Table C1 | `code/tables/table_c1` | Complete |
 
-Visible patterns on river surfaces reflect waves, turbulence, and interactions with channel geometry. This project develops methods for reconstructing water-surface geometry from imagery and combining those observations with inverse modelling to support non-contact river-flow monitoring.
+The remaining figure directories are placeholders for workflows still to be
+added. Each completed directory contains its own README with exact archive
+inputs, outputs, software requirements, and run instructions.
 
-## Prerequisites
+## Data availability
 
-The operational workflow used MATLAB R2024a on Comet and requires Parallel Computing Toolbox. MATLAB's dependency analyser confirms that the synthetic solver is otherwise self-contained by the files listed below.
+Large inputs and derived products are kept in the associated Zenodo archive,
+not duplicated in Git. Point each generator at the root of the extracted
+archive, whose top-level data directories are:
+
+```text
+syn/
+|-- inputs/
+`-- outputs/
+
+videos/
+|-- inputs/
+`-- outputs/
+```
+
+The archive contains a SHA-256 manifest and provenance record. Its solver
+inputs and checkpoints, together with the repository's operational scripts,
+were checked against the read-only Newcastle University Comet working set;
+publication-stage summary files document later local post-processing.
+
+Add the final Zenodo DOI and citation here when the record is published.
+
+## Software
+
+The operational solver and HPC workflows used MATLAB R2024a. Individual
+figure and table workflows specify their own toolbox requirements; some need
+the Image Processing Toolbox or Signal Processing Toolbox. The synthetic HPC
+workflow also uses Parallel Computing Toolbox.
 
 ## Repository structure
 
 ```text
 .
-|-- code
-|   |-- dependencies
-|   |   |-- KLT_applyAngleShift.m
-|   |   |-- KLT_wrapTo360_centerMedian.m
-|   |   |-- LMFnlsq.m
-|   |   |-- camera.m
-|   |   `-- voxelviewshed.m
-|   |-- figures         # Scripts used to reproduce paper figures
-|   |-- hpc
-|   |   |-- real
-|   |   |   |-- klt_analysis_case_lookup.tsv
-|   |   |   |-- resubmit_missing_klt_analysis_jobs.sh
-|   |   |   |-- run_one_klt_analysis_case.sh
-|   |   |   `-- submit_klt_analysis_batch.sh
-|   |   `-- syn
-|   |       |-- resubmit_missing_klt_jobs.sh
-|   |       |-- run_one_klt_case.sh
-|   |       |-- run_one_klt_case_ramlog.sh
-|   |       `-- submit_klt_syn.sh
-|   `-- solver
-|       |-- KLT_synthetic_truth_test_v3.m
-|       `-- KLT_wse_solver_paths_Apoint_block_jacobi_v5.m
-|-- data                # Input and derived data required by the scripts
-|-- images              # Images used in this README or other documentation
+|-- code/
+|   |-- dependencies/              Shared MATLAB dependencies
+|   |-- figures/
+|   |   |-- figure_01/ ... figure_10/
+|   |   `-- figure_a1/ ... figure_a2/
+|   |-- hpc/
+|   |   |-- real/                  Real-video Slurm workflow
+|   |   `-- syn/                   Synthetic Slurm workflow
+|   |-- solver/
+|   |   |-- KLT_synthetic_truth_test_v3.m
+|   |   `-- KLT_wse_solver_paths_Apoint_block_jacobi_v5.m
+|   `-- tables/
+|       |-- table_03/
+|       |-- table_b1/
+|       `-- table_c1/
+|-- data/                           Reserved for small repository data
+|-- images/                         Documentation images
 |-- LICENSE
 `-- README.md
 ```
 
-## How to use
+## Reproducing a figure or table
 
-1. Clone or download this repository.
-2. Open MATLAB and add the repository to the MATLAB path.
-3. Review the relevant script in `code/figures` for its required inputs.
-4. Run the script to reproduce the corresponding result or figure.
+1. Clone this repository and download/extract the associated Zenodo archive.
+2. Open MATLAB and add the selected workflow directory to the path.
+3. Call its generator with the archive root and, optionally, an output folder.
 
-Detailed instructions, software versions, and the mapping between scripts and paper figures will be added as the repository is populated.
+For example:
 
-The scripts in `code/hpc` are exact copies of the operational Newcastle University Comet Slurm files and contain environment-specific paths. Update those paths for another system before submission. Synthetic scripts are in `code/hpc/syn`, while real-video scripts are in `code/hpc/real`; their input data and optional checkpoints are supplied through the associated Zenodo dataset.
+```matlab
+repoRoot = 'C:\path\to\Water-surface-geometry-reconstruction';
+archiveRoot = 'C:\path\to\extracted-zenodo-archive';
 
-The current synthetic workflow expects `synthetic_cases.csv` and four Zenodo solver-input files: `solver_inputs_0pt88.mat`, `solver_inputs_1pt10.mat`, `solver_inputs_1pt50.mat`, and `solver_inputs_1pt70.mat`. The RAM-logging worker contains the full 39-case mapping; the standard worker and submission lists are retained exactly as used on Comet for their selected operational runs.
+addpath(fullfile(repoRoot, 'code', 'figures', 'figure_05'))
+outputs = generate_figure_05(archiveRoot, ...
+    fullfile(repoRoot, 'reproduced', 'figure_05'));
+```
+
+Generated `output` directories beside figure and table scripts are ignored by
+Git. Consult the README in the selected workflow directory before running it.
+
+## Solver and HPC workflows
+
+The shared solver is in `code/solver`, with supporting MATLAB functions in
+`code/dependencies`.
+
+The Bash scripts in `code/hpc` are exact copies of the operational Newcastle
+University Comet Slurm files. They contain environment-specific paths,
+accounts, partitions, log locations, and module names that must be adapted for
+another system. Synthetic scripts are in `code/hpc/syn`; real-video scripts
+and the matching case lookup are in `code/hpc/real`.
+
+The final synthetic publication set contains 39 cases driven by four archived
+solver-input files for hydraulic depths of 0.88, 1.10, 1.50, and 1.70 m. The
+RAM-logging worker contains the complete case mapping. The standard worker and
+submission lists are retained exactly as used on Comet and record selected
+operational runs rather than defining the complete publication set.
+
+The real-video workflow additionally uses the archived case lookup, sweep
+limits, solver inputs, observations, and checkpoints. See
+`code/hpc/README.md` for the full mapping and portability notes.
+
+## Table conventions
+
+- Table 3 uses the first candidate-count snapshot within the adjusted domain
+  accumulated to each accepted WSG map and reports nearest-integer seeding
+  density.
+- Table B1 uses accepted-WSG autocorrelation estimates for the 39 synthetic
+  cases and reports hydraulic depth as `D`.
+- Table C1 combines accepted autocorrelation wave estimates with derived
+  velocity and deep-branch inverse-depth results for stable cases R1-R11.
 
 ## Licence
 
-The software in this repository is released under the [MIT License](LICENSE). Data may be subject to additional terms documented alongside the relevant files.
+The software in this repository is released under the [MIT License](LICENSE).
+Data may be subject to additional terms documented with the Zenodo record.
