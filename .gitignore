@@ -21,6 +21,9 @@ desktop.ini
 # Generated figure products
 code/figures/*/output/
 
+# Generated table products
+code/tables/*/output/
+
 # LaTeX build products
 *.aux
 *.bbl
