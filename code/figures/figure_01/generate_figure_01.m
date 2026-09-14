@@ -92,6 +92,7 @@ vectorInsideMode = 'midpoint';
 
 % Plotting control
 maxVectorsToPlot = 200000;   % use Inf to plot all selected vectors
+vectorSamplingSeed = 1;      % fixed seed for repeatable random subsampling
 
 % Pixel-space angle colouring
 colourVectorsByPixelAngle = true;
@@ -476,7 +477,9 @@ fprintf('Selected vector fraction = %.3f%%\n', ...
 idxVectorsToPlot = idxVectorsInRegion;
 
 if isfinite(maxVectorsToPlot) && numel(idxVectorsToPlot) > maxVectorsToPlot
-    keepSub = round(linspace(1, numel(idxVectorsToPlot), maxVectorsToPlot));
+    samplingStream = RandStream('mt19937ar', 'Seed', vectorSamplingSeed);
+    keepSub = randperm(samplingStream, numel(idxVectorsToPlot), maxVectorsToPlot);
+    keepSub = sort(keepSub);
     idxVectorsToPlot = idxVectorsToPlot(keepSub);
 
     fprintf('Subsampled vectors for plotting: %d of %d\n', ...
@@ -713,6 +716,7 @@ save(outputFile, ...
     'aa', ...
     'flowVectorIdxInsideAdjustedMask', ...
     'flowVectorIdxPlotted', ...
+    'vectorSamplingSeed', ...
     'flowVectorInsideModeUsed', ...
     'flowVectorPixelAngleDeviationPlotted');
 

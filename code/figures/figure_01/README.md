@@ -47,5 +47,7 @@ The function creates:
 - Image Processing Toolbox
 - repository dependencies in `code/dependencies`
 
-The plotting code retains the operational script's random subsampling of up to
-200,000 flow vectors. The selected subset can therefore vary between runs.
+The plotting code uses a local Mersenne Twister stream with seed `1` to select
+up to 200,000 flow vectors. This makes the selected vector indices identical
+on every run without changing MATLAB's global random-number state. The seed and
+selected indices are also recorded in the diagnostic MAT file.
