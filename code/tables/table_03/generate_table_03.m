@@ -288,12 +288,12 @@ write_line(fid, "\centering");
 write_line(fid, "\begin{tabular}{c c c c c c @{\hspace{0.35cm}} c @{\hspace{0.35cm}} c}");
 write_line(fid, "\toprule");
 write_line(fid, "Case & $Q$ & Exceedance & $D$ & $u$ & $Fr$ & $Re$ & Density \\");
-write_line(fid, " & $[\mathrm{m^3\,s^{-1}}]$ & $[\%]$ & $[\mathrm{m}]$ & $[\mathrm{m\,s^{-1}}]$ & $[-]$ & $[-]$ & $[\mathrm{pts\,m^{-2}}]$ \\");
+write_line(fid, " & {[\(\mathrm{m^3~s^{-1}}\)]} & {[\(\%\)]} & {[\(\mathrm{m}\)]} & {[\(\mathrm{m~s^{-1}}\)]} & {[\(-\)]} & {[\(-\)]} & {[\(\mathrm{pts~m^{-2}}\)]} \\");
 write_line(fid, "\midrule");
 for ii = 1:height(T)
     reText = scientific_latex(T.reynoldsNumber_Rh(ii));
     rowFormat = "R$_{%d}$ & %.2f & %.2f & %.2f & %.2f & %.2f & " + ...
-        "$(%s)$ & %d \\\\";
+        "\\(%s\\) & %d \\\\";
     row = sprintf(rowFormat, T.caseNumber(ii), T.discharge_Q_m3ps(ii), ...
         T.flowExceedance_percent(ii), T.hydraulicDepth_D_m(ii), ...
         T.sectionMeanVelocity_u_mps(ii), T.froudeNumber(ii), reText, ...
