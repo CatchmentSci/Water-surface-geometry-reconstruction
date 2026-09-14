@@ -8,8 +8,8 @@ The panels show:
 
 - **(a)** angular residual, with the analysed transect band and selected
   central transect overlaid;
-- **(b)** reconstructed water-surface elevation relative to the initial flat
-  surface; and
+- **(b)** reconstructed water-surface geometry (WSG) relative to the initial
+  flat surface; and
 - **(c)** imposed and reconstructed detrended water-surface geometry and the
   angular residual along the selected transect.
 

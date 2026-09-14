@@ -5,8 +5,8 @@ function fig = KLT_plot_refined_wave_solution_three_panel_final( ...
 %
 % The figure contains:
 %   (a) angular residuals;
-%   (b) reconstructed WSE relative to the flat initial WSE; and
-%   (c) imposed and reconstructed detrended WSE plus angular residuals
+%   (b) reconstructed WSG relative to the flat initial surface; and
+%   (c) imposed and reconstructed detrended WSG plus angular residuals
 %       along the central transect of the first 10 m analysis band.
 %
 % The first 10 m analysis band begins at the first populated row on the
@@ -218,7 +218,7 @@ function fig = KLT_plot_refined_wave_solution_three_panel_final( ...
     hold(ax2, 'on');
     plot_transect_overlays(ax2, xLineAll, selectedTransectY, xLinePlot, yLinePlot, opts);
     cb2 = colorbar(ax2);
-    cb2.Label.String = '$\Delta z_{\mathrm{WSE}}$ (m)';
+    cb2.Label.String = '$\Delta z_{\mathrm{WSG}}$ (m)';
     cb2.Label.Interpreter = 'latex';
     apply_zero_centred_clim(ax2, WacceptedDisplay, opts.relativeWseCLim);
     apply_map_limits_and_equal(ax2, zoomXLim, zoomYLim, opts);
@@ -265,7 +265,7 @@ function fig = KLT_plot_refined_wave_solution_three_panel_final( ...
     plotHandles(end+1) = hEstimated;
     plotLabels{end+1} = 'Reconstructed geometry';
     yline(ax3, 0, 'k:', 'LineWidth', 1.0, 'HandleVisibility','off');
-    ylabel(ax3, '$z_{\mathrm{WSE}}^\prime$ (m)', ...
+    ylabel(ax3, '$z_{\mathrm{WSG}}^\prime$ (m)', ...
         'Interpreter','latex', 'FontSize',opts.axisLabelFontSize);
 
     leftVals = estimatedWSEDetrended(:);
