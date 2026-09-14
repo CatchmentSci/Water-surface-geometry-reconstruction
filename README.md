@@ -62,7 +62,7 @@ Detailed instructions, software versions, and the mapping between scripts and pa
 
 The scripts in `code/hpc` are exact copies of the operational Newcastle University Comet Slurm files and contain environment-specific paths. Update those paths for another system before submission. Synthetic scripts are in `code/hpc/syn`, while real-video scripts are in `code/hpc/real`; their input data and optional checkpoints are supplied through the associated Zenodo dataset.
 
-The current synthetic workflow expects `synthetic_cases.csv` and four Zenodo solver-input files: `solver_inputs_0pt88.mat`, `solver_inputs_1pt10.mat`, `solver_inputs_1pt50.mat`, and `solver_inputs_1pt70.mat`. The RAM-logging worker contains the full 39-case mapping; the standard worker and submission lists are retained exactly as used on Comet for their selected operational runs. The older `solver_inputs_s1pt79.mat` experiment and restart-state files are not part of the current publication dataset.
+The current synthetic workflow expects `synthetic_cases.csv` and four Zenodo solver-input files: `solver_inputs_0pt88.mat`, `solver_inputs_1pt10.mat`, `solver_inputs_1pt50.mat`, and `solver_inputs_1pt70.mat`. The RAM-logging worker contains the full 39-case mapping; the standard worker and submission lists are retained exactly as used on Comet for their selected operational runs.
 
 ## Licence
 
