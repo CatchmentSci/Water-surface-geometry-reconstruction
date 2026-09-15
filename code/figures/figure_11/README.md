@@ -86,3 +86,61 @@ ratio exactly (`impliedVelocityBias`).
 ## Software
 
 - MATLAB R2024a or later
+
+## Velocity-source variant
+
+`generate_figure_11_velocity_variant.m` rebuilds the observed points of
+panel (a) from a transect-level re-inversion driven by a chosen tracked
+surface velocity, so that the figure can be produced with the velocity
+projected onto the accepted water-surface map instead of the velocity
+deposited with the archived depth summary. Panel (b) is unchanged.
+
+It needs, in addition to the archive files above,
+
+- `videos/outputs/wse_autocorrelation_velocity_method_sensitivity_summary.mat`
+  (Figure 8 per-transect tables: accepted autocorrelation wavelength and the
+  `commonValid` mask), and
+- `checkpoint_batch_initial_vs_accepted_velocity_summary.mat` written by
+  `batch_first10m_initial_vs_accepted_velocity_scatterplots.m`
+  (`initialVelocityTrackedMedian_mps` and `acceptedVelocityTrackedMedian_mps`
+  per transect).
+
+On the originating workstation, the second file is available directly at:
+
+```text
+D:\OneDrive - Newcastle University\Documents - WSE Project\General\Dart\Videos\Inputs\batch_first10m_initial_vs_accepted_velocity_outputs\checkpoint_batch_initial_vs_accepted_velocity_summary.mat
+```
+
+This path is the optional default in the function. Pass an explicit
+`batchMatFile` on another computer or after moving the file.
+
+Per transect the constant-profile inversion (Eq. 10a) has the single
+admissible root `h_est = atanh(U^2 k / g) / k`, defined only where
+`U^2 k / g < 1`; case values are paired medians of surveyed depth and
+`h_est` over the `commonValid` transects with an admissible root, as for
+Figure 9(a).
+
+```matlab
+outputs = generate_figure_11_velocity_variant(archiveRoot, ...
+    'C:\path\to\checkpoint_batch_initial_vs_accepted_velocity_summary.mat', ...
+    outputFolder, "VelocitySource", "accepted");   % | "initial" | "archived"
+```
+
+On the originating workstation, the default direct MAT-file link can be used
+by supplying only the archive root (and accepting the default output folder):
+
+```matlab
+outputs = generate_figure_11_velocity_variant(archiveRoot);
+```
+
+`"archived"` reproduces the deposited Figure 9/11 values without
+re-inversion and is the reference the other two sources are compared to.
+The function prints, per case, the maximum absolute difference between the
+archived per-transect velocity and each batch velocity, so the provenance
+of the deposited figure is checked rather than assumed. `"MaxDepth_m"`
+discards transect inversions deeper than a threshold (default `Inf`).
+
+Outputs: `wse_autocorrelation_depth_bias_amplification_<source>_velocity.{png,pdf}`,
+`figure_11_velocity_source_comparison_by_case.csv` (kh, ratio, IQR bars and
+implied velocity bias for all three sources, plus the ratio differences to
+the archived values) and `figure_11_velocity_source_comparison_by_transect.csv`.
