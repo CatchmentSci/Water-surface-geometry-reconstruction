@@ -19,9 +19,9 @@ Reproducibility workflows are currently available for:
 | Figure 4 | `code/figures/figure_04` | Complete |
 | Figure 5 | `code/figures/figure_05` | Complete |
 | Figure 6 | `code/figures/figure_06` | Complete |
-| Figure 8 | `code/figures/figure_08` | Complete |
-| Figure 9 | `code/figures/figure_09` | Complete |
-| Figure 11 (Discussion, depth-bias amplification) | `code/figures/figure_11` | Complete; two-panel, archive CSV inputs |
+| Figure 8 | `code/figures/figure_08` | Complete; initial-planar velocity |
+| Figure 9 | `code/figures/figure_09` | Complete; initial-planar velocity |
+| Figure 11 (Discussion, depth-bias amplification) | `code/figures/figure_11` | Complete; initial-planar velocity |
 | Table 3 | `code/tables/table_03` | Complete |
 | Table B1 | `code/tables/table_b1` | Complete |
 | Table C1 | `code/tables/table_c1` | Complete |
@@ -29,6 +29,12 @@ Reproducibility workflows are currently available for:
 The remaining figure directories are placeholders for workflows still to be
 added. Each completed directory contains its own README with exact archive
 inputs, outputs, software requirements, and run instructions.
+
+All velocity-dependent paper figures use
+`velocityOutTracked.start.u_streamwise_mps`, calculated by projecting the
+tracked paths onto the solver's initial planar water surface. Compact Figure
+8 and Figure 9 summaries carrying this choice are version controlled beside
+their plotting scripts.
 
 ## Data availability
 

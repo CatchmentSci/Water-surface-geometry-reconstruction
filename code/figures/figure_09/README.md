@@ -1,7 +1,8 @@
 # Figure 09
 
-`generate_figure_09.m` reproduces Figure 9 from the archived real-case
-autocorrelation depth-comparison summary.
+`generate_figure_09.m` reproduces Figure 9 from depth solutions re-inverted
+using `velocityOutTracked.start.u_streamwise_mps`, calculated on the initial
+planar water surface.
 
 Panels (a), (b), and (c) compare surveyed cross-section depth, `h`, with the
 deep inverse-depth solution, `h_est`, obtained using uniform, linear, and
@@ -13,15 +14,11 @@ Cases R12 and R13 are retained in the archived table for traceability but are
 excluded from the plotted analysis because their reconstructed
 autocorrelation wavelengths were rejected.
 
-## Required archive file
+## Bundled figure data
 
-Point the function at the root of the extracted Zenodo archive. It loads:
+The function loads the version-controlled compact summary:
 
-`videos/outputs/wse_autocorrelation_uniform_linear_power_depth_summary.csv`
-
-Verified SHA-256 checksum:
-
-`591FAA058AC6738A184F5D533691C92EC90D5EE544A13B56D42FF242D32BD6BD`
+`data/wse_autocorrelation_uniform_linear_power_depth_summary.csv`
 
 The table contains the final R1-R13 medians, quartiles, asymmetric error
 ranges, sample counts, and inclusion flags for both shallow and deep solution
@@ -40,7 +37,7 @@ In MATLAB, from any working directory:
 repoRoot = 'C:\path\to\Water-surface-geometry-reconstruction';
 addpath(fullfile(repoRoot, 'code', 'figures', 'figure_09'))
 outputs = generate_figure_09( ...
-    'C:\path\to\extracted-zenodo-archive', ...
+    '', ... % retained archive argument; bundled data take precedence
     'C:\path\to\figure_09_output');
 ```
 

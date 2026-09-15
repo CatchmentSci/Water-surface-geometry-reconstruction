@@ -1,9 +1,9 @@
 function outputs = generate_figure_11(archiveRoot, outputFolder, options)
 %GENERATE_FIGURE_11 Amplification of surface-velocity bias in depth inversion.
 %   OUTPUTS = GENERATE_FIGURE_11(ARCHIVEROOT, OUTPUTFOLDER) reads the
-%   archived inverse-depth summary and Table C1 results from the extracted
-%   Zenodo archive and writes a two-panel publication PNG and PDF to
-%   OUTPUTFOLDER.
+%   bundled initial-planar-velocity inverse-depth summary and the Table C1
+%   wavelengths from the extracted Zenodo archive, and writes a two-panel
+%   publication PNG and PDF to OUTPUTFOLDER.
 %
 %   For a fractional underestimation epsilon of the tracked surface
 %   velocity, the constant-profile inversion (Eq. 10a) returns a depth
@@ -26,24 +26,27 @@ function outputs = generate_figure_11(archiveRoot, outputFolder, options)
 %                       (default [0.08 0.12 0.16]; first is the solid line)
 %     "KhValues"        relative depths drawn in panel (b)
 %                       (default [1 3 8])
-%     "ReferenceEpsilon" bias marked in panel (b) (default 0.08, the median
-%                       U_deep/U_s offset of Figure 8a)
+%     "ReferenceEpsilon" bias marked in panel (b). Empty (default) uses the
+%                       median initial-planar-velocity bias from Figure 8a.
 
 arguments
     archiveRoot (1, 1) string
     outputFolder (1, 1) string = fullfile(fileparts(mfilename('fullpath')), "output")
     options.EpsilonValues (1, :) double {mustBePositive, mustBeLessThan(options.EpsilonValues, 1)} = [0.08 0.12 0.16]
     options.KhValues (1, :) double {mustBePositive} = [1 3 8]
-    options.ReferenceEpsilon (1, 1) double {mustBeNonnegative, mustBeLessThan(options.ReferenceEpsilon, 1)} = 0.08
+    options.ReferenceEpsilon (1, :) double = []
 end
 
 archiveRoot = string(archiveRoot);
 outputFolder = string(outputFolder);
+scriptFolder = string(fileparts(mfilename("fullpath")));
 outputRoot = fullfile(archiveRoot, "videos", "outputs");
-depthFile = fullfile(outputRoot, ...
+depthFile = fullfile(scriptFolder, "..", "figure_09", "data", ...
     "wse_autocorrelation_uniform_linear_power_depth_summary.csv");
+velocityFile = fullfile(scriptFolder, "..", "figure_08", "data", ...
+    "wse_autocorrelation_velocity_method_sensitivity_summary.mat");
 tableC1File = fullfile(outputRoot, "table_c1_real_wave_hydraulic_results.csv");
-requiredFiles = [depthFile, tableC1File];
+requiredFiles = [depthFile, velocityFile, tableC1File];
 for ii = 1:numel(requiredFiles)
     if ~isfile(requiredFiles(ii))
         error("Figure11:MissingInput", ...
@@ -58,8 +61,7 @@ assert_fields(depth, ["caseNumber", "caseLabel", "discharge_Q_m3ps", ...
     "includedInFigure", "uniform_deep_nPairs", "uniform_deep_xMedian", ...
     "uniform_deep_xQ25", "uniform_deep_xQ75", "uniform_deep_yMedian", ...
     "uniform_deep_yQ25", "uniform_deep_yQ75"], "depth summary");
-assert_fields(tableC1, ["caseNumber", "caseLabel", "lambdaEst_m", ...
-    "depthConstant_m"], "Table C1");
+assert_fields(tableC1, ["caseNumber", "caseLabel", "lambdaEst_m"], "Table C1");
 
 if height(depth) ~= 13
     error("Figure11:UnexpectedCases", ...
@@ -84,8 +86,6 @@ end
 % Align Table C1 (R1-R11) with the depth summary (R1-R13).
 lambda = nan(13, 1);
 lambda(1:11) = double(tableC1.lambdaEst_m);
-depthC1 = nan(13, 1);
-depthC1(1:11) = double(tableC1.depthConstant_m);
 
 q = double(depth.discharge_Q_m3ps);
 nPairs = double(depth.uniform_deep_nPairs);
@@ -95,16 +95,6 @@ hQ75 = double(depth.uniform_deep_xQ75);
 hEst = double(depth.uniform_deep_yMedian);
 hEstQ25 = double(depth.uniform_deep_yQ25);
 hEstQ75 = double(depth.uniform_deep_yQ75);
-
-% Table C1 depthConstant_m is deposited as the same deep-branch case
-% median; guard against the two archive products drifting apart.
-mismatch = included & isfinite(depthC1) & ...
-    abs(depthC1 - hEst) > 1e-6 .* max(1, abs(hEst));
-if any(mismatch)
-    error("Figure11:InconsistentArchive", ...
-        "Table C1 depthConstant_m differs from the Figure 9 deep median for: %s", ...
-        strjoin(string(depth.caseLabel(mismatch)), ", "));
-end
 
 valid = included & nPairs > 0 & isfinite(lambda) & lambda > 0 & ...
     isfinite(h) & h > 0 & isfinite(hEst) & isfinite(q) & ...
@@ -127,6 +117,25 @@ for ee = 1:numel(epsilonValues)
 end
 % Velocity bias that would reproduce each observed ratio exactly.
 impliedEpsilon = 1 - sqrt(tanh(ratio .* kh) ./ tanh(kh));
+
+if isempty(options.ReferenceEpsilon)
+    velocitySummary = load(velocityFile, ...
+        "autocorrCaseSummaryTable", "autocorrPanelIncluded");
+    velocityCases = velocitySummary.autocorrCaseSummaryTable;
+    velocityIncluded = logical(velocitySummary.autocorrPanelIncluded(:));
+    referenceValues = 1 - double(velocityCases.deep_xMedian) ./ ...
+        double(velocityCases.deep_yMedian);
+    referenceEpsilon = round(median(referenceValues(velocityIncluded & ...
+        isfinite(referenceValues)), "omitnan"), 2);
+else
+    if ~isscalar(options.ReferenceEpsilon) || ...
+            ~isfinite(options.ReferenceEpsilon) || ...
+            options.ReferenceEpsilon < 0 || options.ReferenceEpsilon >= 1
+        error("Figure11:InvalidReferenceEpsilon", ...
+            "ReferenceEpsilon must be empty or a scalar in [0, 1).")
+    end
+    referenceEpsilon = options.ReferenceEpsilon;
+end
 
 figCfg = struct;
 figCfg.figureWidth_in = 5.5;
@@ -172,7 +181,7 @@ legendHandle = plot_amplification_panel(ax1, kh(valid), ratio(valid), ...
     ratioErrHigh(valid), q(valid), qLimits, epsilonValues, figCfg);
 
 ax2 = nexttile(layout, 2);
-plot_sensitivity_panel(ax2, options.KhValues, options.ReferenceEpsilon, ...
+plot_sensitivity_panel(ax2, options.KhValues, referenceEpsilon, ...
     figCfg);
 
 cb = colorbar(ax1, "southoutside");
@@ -207,13 +216,14 @@ writetable(caseTable, csvFile);
 
 outputs = struct;
 outputs.depthFile = depthFile;
+outputs.velocityFile = velocityFile;
 outputs.tableC1File = tableC1File;
 outputs.pngFile = pngFile;
 outputs.pdfFile = pdfFile;
 outputs.csvFile = csvFile;
 outputs.epsilonValues = epsilonValues;
 outputs.khValues = options.KhValues;
-outputs.referenceEpsilon = options.ReferenceEpsilon;
+outputs.referenceEpsilon = referenceEpsilon;
 outputs.caseTable = caseTable;
 outputs.includedCases = string(depth.caseLabel(valid));
 outputs.excludedCases = string(depth.caseLabel(~valid));
@@ -294,10 +304,10 @@ ylim(ax, [0 1.05]);
 if referenceEpsilon > 0
     plot(ax, 100 .* [referenceEpsilon referenceEpsilon], [0 1.05], ":", ...
         "Color", cfg.errorColour, "LineWidth", 0.8, "HandleVisibility", "off");
-    text(ax, 100 .* referenceEpsilon + 0.4, 1.02, ...
+    text(ax, 100 .* referenceEpsilon - 0.4, 1.02, ...
         sprintf("%g%%", 100 .* referenceEpsilon), ...
         "FontSize", cfg.annotationFontSize, "Color", [0.35 0.35 0.35], ...
-        "HorizontalAlignment", "left", "VerticalAlignment", "top", ...
+        "HorizontalAlignment", "right", "VerticalAlignment", "top", ...
         "Interpreter", "tex");
 end
 for kk = 1:numel(khValues)

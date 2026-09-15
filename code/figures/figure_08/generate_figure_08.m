@@ -1,22 +1,22 @@
 function outputs = generate_figure_08(archiveRoot, outputFolder)
-%GENERATE_FIGURE_08 Reproduce the autocorrelation velocity figure.
-%   OUTPUTS = GENERATE_FIGURE_08(ARCHIVEROOT, OUTPUTFOLDER) reads the
-%   compact Figure 8 summary from the extracted Zenodo archive and writes
-%   the publication PNG and PDF to OUTPUTFOLDER.
+%GENERATE_FIGURE_08 Reproduce the initial-planar-velocity figure.
+%   The bundled compact summary uses velocityOutTracked.start.
+%   u_streamwise_mps, obtained by projecting tracked paths onto the initial
+%   planar water surface. ARCHIVEROOT is retained for API compatibility;
+%   the bundled, version-controlled summary always takes precedence.
 
 arguments
-    archiveRoot (1, 1) string
+    archiveRoot (1, 1) string = "" %#ok<INUSA>
     outputFolder (1, 1) string = fullfile(fileparts(mfilename('fullpath')), "output")
 end
 
-archiveRoot = string(archiveRoot);
 outputFolder = string(outputFolder);
-summaryFile = fullfile(archiveRoot, "videos", "outputs", ...
+summaryFile = fullfile(fileparts(mfilename("fullpath")), "data", ...
     "wse_autocorrelation_velocity_method_sensitivity_summary.mat");
 
 if ~isfile(summaryFile)
     error("Figure08:MissingSummary", ...
-        "Required archive file was not found:\n%s", summaryFile);
+        "Required bundled initial-velocity summary was not found:\n%s", summaryFile);
 end
 
 source = load(summaryFile, ...

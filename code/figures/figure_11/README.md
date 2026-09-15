@@ -1,6 +1,8 @@
 # Figure 11
 
-`generate_figure_11.m` produces the discussion figure showing how a bias in
+`generate_figure_11.m` produces the discussion figure using depth estimates
+derived from `velocityOutTracked.start.u_streamwise_mps`, calculated on the
+initial planar water surface, and shows how a bias in
 the tracked surface velocity is amplified by the wavelength-based depth
 inversion (Section 4.4).
 
@@ -23,21 +25,22 @@ The panels show:
   ranges of `h` (mapped to `kh`) and of `h_est` (divided by the median `h`).
   Marker colour denotes discharge.
 - **(b)** the same ratio as a function of `epsilon` for `kh` = 1, 3 and 8,
-  bracketing the field range, with the 8 % reference bias (the median
-  `U_deep`/`U_s` offset of Figure 8a) marked.
+  bracketing the field range, with the reference bias (the rounded median
+  `U_deep`/`U_s` offset calculated from the initial-planar-velocity Figure 8
+  summary marked. This reference is calculated automatically.
 
 Cases R12 and R13 are retained in the archived summary but excluded from
 panel (a) under the shared stable-reconstruction mask.
 
 ## Required archive files
 
-Point the function at the root of the extracted Zenodo archive. It loads:
+The initial-velocity depth summary is bundled with Figure 9:
 
-`videos/outputs/wse_autocorrelation_uniform_linear_power_depth_summary.csv`
+`../figure_09/data/wse_autocorrelation_uniform_linear_power_depth_summary.csv`
 
-SHA-256:
+The initial-velocity validation summary is bundled with Figure 8:
 
-`591FAA058AC6738A184F5D533691C92EC90D5EE544A13B56D42FF242D32BD6BD`
+`../figure_08/data/wse_autocorrelation_velocity_method_sensitivity_summary.mat`
 
 `videos/outputs/table_c1_real_wave_hydraulic_results.csv`
 
@@ -45,9 +48,8 @@ SHA-256:
 
 `95A58E56DFF92C685E44E55380762AF2D4A246FE0262C64F0EEE493D05D83457`
 
-The function checks that `depthConstant_m` in Table C1 matches the deep
-uniform-profile median in the Figure 9 summary and stops if the two archive
-products disagree.
+Only `lambdaEst_m` is taken from Table C1; the velocity-derived depth values
+come from the bundled initial-velocity Figure 9 summary.
 
 This is a compact post-processing product: reproducing the figure does not
 rerun the KLT solver, checkpoint selection, wavelength estimation, or
@@ -74,7 +76,7 @@ Optional name-value arguments override the curves drawn:
 outputs = generate_figure_11(archiveRoot, outputFolder, ...
     "EpsilonValues", [0.08 0.12 0.16], ...   % panel (a) curves
     "KhValues", [1 3 8], ...                 % panel (b) curves
-    "ReferenceEpsilon", 0.08);               % panel (b) marker
+    "ReferenceEpsilon", []);                 % auto from Figure 8
 ```
 
 The function creates
@@ -91,9 +93,9 @@ ratio exactly (`impliedVelocityBias`).
 
 `generate_figure_11_velocity_variant.m` rebuilds the observed points of
 panel (a) from a transect-level re-inversion driven by a chosen tracked
-surface velocity, so that the figure can be produced with the velocity
-projected onto the accepted water-surface map instead of the velocity
-deposited with the archived depth summary. Panel (b) is unchanged.
+surface velocity. Its default is the initial planar-surface velocity;
+accepted-map and archived velocities remain available only as explicit
+diagnostic comparisons. Panel (b) is otherwise unchanged.
 
 It needs, in addition to the archive files above,
 
@@ -123,7 +125,7 @@ Figure 9(a).
 ```matlab
 outputs = generate_figure_11_velocity_variant(archiveRoot, ...
     'C:\path\to\checkpoint_batch_initial_vs_accepted_velocity_summary.mat', ...
-    outputFolder, "VelocitySource", "accepted");   % | "initial" | "archived"
+    outputFolder, "VelocitySource", "initial");   % default
 ```
 
 On the originating workstation, the default direct MAT-file link can be used

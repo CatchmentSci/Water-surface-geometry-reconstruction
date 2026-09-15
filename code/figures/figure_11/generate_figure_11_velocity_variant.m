@@ -2,9 +2,9 @@ function outputs = generate_figure_11_velocity_variant(archiveRoot, batchMatFile
 %GENERATE_FIGURE_11_VELOCITY_VARIANT Figure 11 with a chosen tracked-velocity source.
 %   OUTPUTS = GENERATE_FIGURE_11_VELOCITY_VARIANT(ARCHIVEROOT, BATCHMATFILE,
 %   OUTPUTFOLDER) rebuilds the observed points of Figure 11(a) from a
-%   transect-level depth inversion driven by the tracked surface velocity
-%   projected onto the ACCEPTED water-surface map, rather than the velocity
-%   deposited with the archived depth summary, and writes the two-panel
+%   transect-level depth inversion driven by a selected tracked surface
+%   velocity. The default is the velocity projected onto the INITIAL PLANAR
+%   water surface. The function writes the two-panel
 %   figure, a per-case CSV comparing the velocity sources, and a
 %   per-transect CSV.
 %
@@ -30,13 +30,13 @@ function outputs = generate_figure_11_velocity_variant(archiveRoot, batchMatFile
 %   is unchanged from generate_figure_11.
 %
 %   Name-value options
-%     "VelocitySource"   "accepted" (default) | "initial" | "archived"
+%     "VelocitySource"   "initial" (default) | "accepted" | "archived"
 %                        "archived" reproduces the deposited Figure 9/11
 %                        values from the archive CSVs without re-inversion
 %                        and is the reference the other two are compared to.
 %     "EpsilonValues"    panel (a) curves (default [0.08 0.12 0.16])
 %     "KhValues"         panel (b) curves (default [1 3 8])
-%     "ReferenceEpsilon" panel (b) marker (default 0.08)
+%     "ReferenceEpsilon" panel (b) marker (default 0.11)
 %     "MaxDepth_m"       discard transect inversions deeper than this
 %                        (default Inf; set e.g. 10 to mimic a "reasonable
 %                        range" filter if the archived analysis used one)
@@ -50,10 +50,10 @@ arguments
     batchMatFile (1, 1) string = ...
         "D:\OneDrive - Newcastle University\Documents - WSE Project\General\Dart\Videos\Inputs\batch_first10m_initial_vs_accepted_velocity_outputs\checkpoint_batch_initial_vs_accepted_velocity_summary.mat"
     outputFolder (1, 1) string = fullfile(fileparts(mfilename('fullpath')), "output")
-    options.VelocitySource (1, 1) string {mustBeMember(options.VelocitySource, ["accepted", "initial", "archived"])} = "accepted"
+    options.VelocitySource (1, 1) string {mustBeMember(options.VelocitySource, ["accepted", "initial", "archived"])} = "initial"
     options.EpsilonValues (1, :) double {mustBePositive, mustBeLessThan(options.EpsilonValues, 1)} = [0.08 0.12 0.16]
     options.KhValues (1, :) double {mustBePositive} = [1 3 8]
-    options.ReferenceEpsilon (1, 1) double {mustBeNonnegative, mustBeLessThan(options.ReferenceEpsilon, 1)} = 0.08
+    options.ReferenceEpsilon (1, 1) double {mustBeNonnegative, mustBeLessThan(options.ReferenceEpsilon, 1)} = 0.11
     options.MaxDepth_m (1, 1) double {mustBePositive} = Inf
 end
 
@@ -418,9 +418,9 @@ xlim(ax, [0 15]); ylim(ax, [0 1.05]);
 if referenceEpsilon > 0
     plot(ax, 100 .* [referenceEpsilon referenceEpsilon], [0 1.05], ":", ...
         "Color", cfg.errorColour, "LineWidth", 0.8, "HandleVisibility", "off");
-    text(ax, 100 .* referenceEpsilon + 0.4, 1.02, sprintf("%g%%", 100 .* referenceEpsilon), ...
+    text(ax, 100 .* referenceEpsilon - 0.4, 1.02, sprintf("%g%%", 100 .* referenceEpsilon), ...
         "FontSize", cfg.annotationFontSize, "Color", [0.35 0.35 0.35], ...
-        "HorizontalAlignment", "left", "VerticalAlignment", "top", "Interpreter", "tex");
+        "HorizontalAlignment", "right", "VerticalAlignment", "top", "Interpreter", "tex");
 end
 for kk = 1:numel(khValues)
     style = cfg.curveStyles(min(kk, numel(cfg.curveStyles)));

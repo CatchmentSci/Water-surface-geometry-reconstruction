@@ -1,21 +1,21 @@
 function outputs = generate_figure_09(archiveRoot, outputFolder)
-%GENERATE_FIGURE_09 Reproduce the autocorrelation deep-depth figure.
-%   OUTPUTS = GENERATE_FIGURE_09(ARCHIVEROOT, OUTPUTFOLDER) reads the
-%   compact depth-comparison summary from the extracted Zenodo archive and
-%   writes the publication PNG and PDF to OUTPUTFOLDER.
+%GENERATE_FIGURE_09 Reproduce the initial-planar-velocity depth figure.
+%   The bundled depth summary was re-inverted using
+%   velocityOutTracked.start.u_streamwise_mps. ARCHIVEROOT is retained for
+%   API compatibility; the bundled, version-controlled summary always
+%   takes precedence.
 
 arguments
-    archiveRoot (1, 1) string
+    archiveRoot (1, 1) string = "" %#ok<INUSA>
     outputFolder (1, 1) string = fullfile(fileparts(mfilename('fullpath')), "output")
 end
 
-archiveRoot = string(archiveRoot);
 outputFolder = string(outputFolder);
-summaryFile = fullfile(archiveRoot, "videos", "outputs", ...
+summaryFile = fullfile(fileparts(mfilename("fullpath")), "data", ...
     "wse_autocorrelation_uniform_linear_power_depth_summary.csv");
 if ~isfile(summaryFile)
     error("Figure09:MissingSummary", ...
-        "Required archive file was not found:\n%s", summaryFile);
+        "Required bundled initial-velocity summary was not found:\n%s", summaryFile);
 end
 
 T = readtable(summaryFile, "VariableNamingRule", "preserve");
