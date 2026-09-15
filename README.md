@@ -21,6 +21,7 @@ Reproducibility workflows are currently available for:
 | Figure 6 | `code/figures/figure_06` | Complete |
 | Figure 8 | `code/figures/figure_08` | Complete |
 | Figure 9 | `code/figures/figure_09` | Complete |
+| Figure 11 (Discussion, depth-bias amplification) | `code/figures/figure_11` | Complete; two-panel, archive CSV inputs |
 | Table 3 | `code/tables/table_03` | Complete |
 | Table B1 | `code/tables/table_b1` | Complete |
 | Table C1 | `code/tables/table_c1` | Complete |
@@ -66,7 +67,7 @@ workflow also uses Parallel Computing Toolbox.
 |-- code/
 |   |-- dependencies/              Shared MATLAB dependencies
 |   |-- figures/
-|   |   |-- figure_01/ ... figure_10/
+|   |   |-- figure_01/ ... figure_11/
 |   |   `-- figure_a1/ ... figure_a2/
 |   |-- hpc/
 |   |   |-- real/                  Real-video Slurm workflow
