@@ -2,21 +2,25 @@
 
 `generate_table_c1.m` reproduces Appendix Table C1 for the stable real-world
 cases R1-R11. It combines accepted autocorrelation wave estimates with
-derived velocity and inverse-depth summaries already deposited for Figures 8
-and 9.
+derived velocities and the initial-planar-velocity inverse-depth summary used
+for Figures 8 and 9.
 
-## Required archive files
+## Required inputs
 
-Point the function at the root of the extracted Zenodo archive. It reads:
+The accepted-map amplitude summary is read from the extracted Zenodo archive:
 
-- `videos/outputs/wse_autocorrelation_velocity_method_sensitivity_summary.mat`;
-- `videos/outputs/real_wave_wse_pmusic_summary.csv`; and
-- `videos/outputs/wse_autocorrelation_uniform_linear_power_depth_summary.csv`.
+- `videos/outputs/real_wave_wse_pmusic_summary.csv`.
 
-The MAT-file supplies direct transect-level accepted autocorrelation
-wavelengths and case-level velocity medians. The accepted-map summary supplies
-the robust WSG amplitude, which does not depend on the wavelength method. The
-depth summary supplies the deep-branch median for each velocity profile.
+The velocity and depth summaries are version controlled with their figure
+workflows:
+
+- `code/figures/figure_08/data/wse_autocorrelation_velocity_method_sensitivity_summary.mat`;
+- `code/figures/figure_09/data/wse_autocorrelation_uniform_linear_power_depth_summary.csv`.
+
+The MAT-file supplies accepted-WSG autocorrelation wavelengths and the
+initial-planar tracked velocities. The amplitude summary supplies the robust
+WSG amplitude. The depth summary supplies deep-branch medians recalculated
+using `velocityOutTracked.start.u_streamwise_mps`.
 
 ## Run
 
@@ -46,10 +50,10 @@ deposited deep-water velocities to the table's three-decimal precision under
 differences can arise for an even number of transects because the median is
 taken before versus after the nonlinear transformation.
 
-R12 and R13 are omitted under the deposited stable-reconstruction inclusion
-mask. R5, R7, and R11 have no admissible linear- or power-profile inverse-depth
-solution in the deposited Figure 9 summary, so those values are rendered as
-`--`. Constant-profile depth values remain available for all R1-R11 cases.
+R12 and R13 are omitted under the stable-reconstruction inclusion mask. Linear
+deep solutions are unavailable for R5 and R11. Power-profile deep solutions
+are unavailable for R3, R5, R7, and R11. These values are rendered as `--`;
+uniform-profile depths remain available for all R1-R11 cases.
 
 The LaTeX output requires the `booktabs` package.
 

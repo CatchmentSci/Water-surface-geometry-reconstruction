@@ -140,7 +140,8 @@ limits, solver inputs, observations, and checkpoints. See
 - Table B1 uses accepted-WSG autocorrelation estimates for the 39 synthetic
   cases and reports hydraulic depth as `D`.
 - Table C1 combines accepted autocorrelation wave estimates with derived
-  velocity and deep-branch inverse-depth results for stable cases R1-R11.
+  velocities and initial-planar-velocity deep-branch depth results for stable
+  cases R1-R11.
 
 ## Licence
 
