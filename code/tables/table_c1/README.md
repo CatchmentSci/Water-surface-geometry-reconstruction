@@ -19,8 +19,11 @@ workflows:
 
 The MAT-file supplies accepted-WSG autocorrelation wavelengths and the
 initial-planar tracked velocities. The amplitude summary supplies the robust
-WSG amplitude. The depth summary supplies deep-branch medians recalculated
-using `velocityOutTracked.start.u_streamwise_mps`.
+WSG amplitude. The depth summary supplies medians recalculated using
+`velocityOutTracked.start.u_streamwise_mps`. For each transect, it uses the
+largest admissible root where multiple roots exist and the sole admissible
+root otherwise; a case median can therefore combine deep-branch and
+unique-root estimates.
 
 ## Run
 

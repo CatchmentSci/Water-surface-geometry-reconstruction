@@ -34,7 +34,9 @@ All velocity-dependent paper figures use
 `velocityOutTracked.start.u_streamwise_mps`, calculated by projecting the
 tracked paths onto the solver's initial planar water surface. Compact Figure
 8 and Figure 9 summaries carrying this choice are version controlled beside
-their plotting scripts.
+their plotting scripts. The Figure 9 workflow also includes a reproducible
+root-bracketing step and a per-transect audit table that distinguishes
+unique-root from multiple-root inversions.
 
 ## Data availability
 

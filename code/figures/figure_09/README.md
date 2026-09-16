@@ -5,8 +5,11 @@ using `velocityOutTracked.start.u_streamwise_mps`, calculated on the initial
 planar water surface.
 
 Panels (a), (b), and (c) compare surveyed cross-section depth, `h`, with the
-deep inverse-depth solution, `h_est`, obtained using uniform, linear, and
-power velocity-profile formulations, respectively. Marker colour denotes
+selected inverse-depth solution, `h_est`, obtained using uniform, linear, and
+power velocity-profile formulations, respectively. For each transect, the
+largest admissible root is selected when multiple roots exist; the sole root
+is retained when only one admissible root exists. Case medians can therefore
+combine deep-branch and unique-root estimates. Marker colour denotes
 discharge, grey bars show the interquartile range in both coordinates, and
 the dashed line is the one-to-one relationship.
 
@@ -21,13 +24,17 @@ The function loads the version-controlled compact summary:
 `data/wse_autocorrelation_uniform_linear_power_depth_summary.csv`
 
 The table contains the final R1-R13 medians, quartiles, asymmetric error
-ranges, sample counts, and inclusion flags for both shallow and deep solution
-branches. Figure 9 uses the deep branch, while both branches are read to
-retain the common axis limits used for the paper's paired depth figures.
+ranges, sample counts, and inclusion flags for both shallow and selected
+deep-or-sole solutions. Both sets are read to retain the common axis limits
+used for the paper's paired depth figures.
 
-This is a compact post-processing product: reproducing Figure 9 does not
-rerun the KLT solver, checkpoint selection, wavelength estimation, or
-inverse-depth calculations.
+`generate_figure_09_depth_summary.m` rebuilds this summary from the
+version-controlled Figure 8 transect data and also writes
+`data/wse_autocorrelation_depth_root_audit.csv`. The audit table records the
+number and value of admissible roots for every case, transect, and velocity
+profile. Roots are bracketed on a 0.01 m grid within 0.05--5.00 m; only
+subcritical roots are retained. Rebuilding the summary does not rerun the KLT
+solver, checkpoint selection, or wavelength estimation.
 
 ## Run
 
@@ -36,6 +43,7 @@ In MATLAB, from any working directory:
 ```matlab
 repoRoot = 'C:\path\to\Water-surface-geometry-reconstruction';
 addpath(fullfile(repoRoot, 'code', 'figures', 'figure_09'))
+depthData = generate_figure_09_depth_summary;
 outputs = generate_figure_09( ...
     '', ... % retained archive argument; bundled data take precedence
     'C:\path\to\figure_09_output');
@@ -44,7 +52,7 @@ outputs = generate_figure_09( ...
 If the second argument is omitted, output is written to an `output` directory
 beside the script. Generated output is ignored by Git.
 
-The function creates
+The plotting function creates
 `wse_autocorrelation_uniform_linear_power_depth_deep_solutions.png` at 600
 dpi and the corresponding vector PDF.
 
