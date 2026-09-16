@@ -15,7 +15,7 @@ In MATLAB, from any working directory:
 
 ```matlab
 repoRoot = 'C:\path\to\Water-surface-geometry-reconstruction';
-addpath(fullfile(repoRoot, 'code', 'figures', 'figure_04'))
+addpath(fullfile(repoRoot, 'code', 'figures', 'figure_03'))
 outputs = generate_figure_03( ...
     'C:\path\to\figure_03_output');
 ```
