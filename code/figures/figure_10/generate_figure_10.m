@@ -6,8 +6,8 @@ function outputs = generate_figure_10(dataRoot, outputDir)
 %   outputDir - folder where generated figures are saved
 %
 % Example:
-%   generate_figure_10("D:\2026_Crescent\analysis\data", ...
-%                     "D:\2026_Crescent\analysis\figures")
+%   generate_figure_10("C:\path\to\figure_10_data", ...
+%                     "C:\path\to\figure_07_output")
 
 arguments
     dataRoot (1,1) string
