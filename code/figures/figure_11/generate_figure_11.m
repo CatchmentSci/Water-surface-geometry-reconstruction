@@ -165,7 +165,7 @@ end
 if ~isfolder(outputFolder)
     mkdir(outputFolder);
 end
-outputBase = fullfile(outputFolder, "wse_autocorrelation_depth_bias_amplification");
+outputBase = fullfile(outputFolder, "Figure11");
 
 fig = figure("Color", "w", "Units", "inches", ...
     "Position", [1 1 figCfg.figureWidth_in figCfg.figureHeight_in], ...

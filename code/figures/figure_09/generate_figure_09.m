@@ -86,7 +86,7 @@ if ~isfolder(outputFolder)
     mkdir(outputFolder);
 end
 outputBase = fullfile(outputFolder, ...
-    "wse_autocorrelation_uniform_linear_power_depth_deep_solutions");
+    "Figure9");
 
 fig = make_depth_figure(T, methods, included, q, qLimits, ...
     commonAxisLimits, cfg);
