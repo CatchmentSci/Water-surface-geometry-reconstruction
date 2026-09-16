@@ -1,4 +1,4 @@
-# Figure 04
+# Figure 03
 
 `generate_figure_03.m` reproduces Figure 3 with alpha `0.85`.
 
