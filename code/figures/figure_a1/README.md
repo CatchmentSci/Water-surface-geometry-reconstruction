@@ -16,10 +16,6 @@ does not read measured velocity data.
 The linear and power-profile calculations use \(\alpha=0.85\), wavelengths
 span 0.1--100 m, and the five fixed depths span 0.1--10 m. Right-hand depth
 labels align with the constant-profile endpoints at the maximum wavelength.
-The canvas is calibrated for placement at `width=0.6\textwidth` in
-the 5.5-inch AGU manuscript template. At that size, tick and legend text are
-approximately 9 pt, axis labels are approximately 10 pt, and the displayed
-stroke weights are consistent with the other manuscript figures.
 
 ## Run
 
