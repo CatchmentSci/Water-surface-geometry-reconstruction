@@ -1,10 +1,9 @@
 # Figure 11
 
 `generate_figure_11.m` produces the discussion figure using depth estimates
-derived from `velocityOutTracked.start.u_streamwise_mps`, calculated on the
-initial planar water surface, and shows how a bias in
-the tracked surface velocity is amplified by the wavelength-based depth
-inversion (Section 4.4).
+derived from KLT-IV surface velocities and shows how a bias in the tracked
+surface velocity is amplified by the wavelength-based depth inversion
+(Section 4.4).
 
 For a fractional underestimation `epsilon` of the tracked surface velocity,
 the constant-profile inversion (Eq. 10a) returns a depth `h_est` satisfying
@@ -26,19 +25,19 @@ The panels show:
   Marker colour denotes discharge.
 - **(b)** the same ratio as a function of `epsilon` for `kh` = 1, 3 and 8,
   bracketing the field range, with the reference bias (the rounded median
-  `U_deep`/`U_s` offset calculated from the initial-planar-velocity Figure 8
-  summary marked. This reference is calculated automatically.
+  `U_deep`/`U_s` offset calculated from the KLT-IV Figure 8 summary) marked.
+  This reference is calculated automatically.
 
 Cases R12 and R13 are retained in the archived summary but excluded from
 panel (a) under the shared stable-reconstruction mask.
 
 ## Required archive files
 
-The initial-velocity depth summary is bundled with Figure 9:
+The KLT-IV-based depth summary is bundled with Figure 9:
 
 `../figure_09/data/wse_autocorrelation_uniform_linear_power_depth_summary.csv`
 
-The initial-velocity validation summary is bundled with Figure 8:
+The KLT-IV velocity-validation summary is bundled with Figure 8:
 
 `../figure_08/data/wse_autocorrelation_velocity_method_sensitivity_summary.mat`
 
@@ -49,7 +48,7 @@ SHA-256:
 `95A58E56DFF92C685E44E55380762AF2D4A246FE0262C64F0EEE493D05D83457`
 
 Only `lambdaEst_m` is taken from Table C1; the velocity-derived depth values
-come from the bundled initial-velocity Figure 9 summary.
+come from the bundled Figure 9 summary.
 
 This is a compact post-processing product: reproducing the figure does not
 rerun the KLT solver, checkpoint selection, wavelength estimation, or
@@ -79,70 +78,11 @@ outputs = generate_figure_11(archiveRoot, outputFolder, ...
     "ReferenceEpsilon", []);                 % auto from Figure 8
 ```
 
-The function creates
-`wse_autocorrelation_depth_bias_amplification.png` at 600 dpi, the
-corresponding vector PDF, and a CSV of the plotted values with the predicted
-ratio at each case and the velocity bias that would reproduce each observed
+The function creates `Figure11.png` at 600 dpi, the corresponding
+`Figure11.pdf`, and `Figure11.csv` containing the plotted values, predicted
+ratio at each case, and the velocity bias that would reproduce each observed
 ratio exactly (`impliedVelocityBias`).
 
 ## Software
 
 - MATLAB R2024a or later
-
-## Velocity-source variant
-
-`generate_figure_11_velocity_variant.m` rebuilds the observed points of
-panel (a) from a transect-level re-inversion driven by a chosen tracked
-surface velocity. Its default is the initial planar-surface velocity;
-accepted-map and archived velocities remain available only as explicit
-diagnostic comparisons. Panel (b) is otherwise unchanged.
-
-It needs, in addition to the archive files above,
-
-- `videos/outputs/wse_autocorrelation_velocity_method_sensitivity_summary.mat`
-  (Figure 8 per-transect tables: accepted autocorrelation wavelength and the
-  `commonValid` mask), and
-- `checkpoint_batch_initial_vs_accepted_velocity_summary.mat` written by
-  `batch_first10m_initial_vs_accepted_velocity_scatterplots.m`
-  (`initialVelocityTrackedMedian_mps` and `acceptedVelocityTrackedMedian_mps`
-  per transect).
-
-On the originating workstation, the second file is available directly at:
-
-```text
-D:\OneDrive - Newcastle University\Documents - WSE Project\General\Dart\Videos\Inputs\batch_first10m_initial_vs_accepted_velocity_outputs\checkpoint_batch_initial_vs_accepted_velocity_summary.mat
-```
-
-This path is the optional default in the function. Pass an explicit
-`batchMatFile` on another computer or after moving the file.
-
-Per transect the constant-profile inversion (Eq. 10a) has the single
-admissible root `h_est = atanh(U^2 k / g) / k`, defined only where
-`U^2 k / g < 1`; case values are paired medians of surveyed depth and
-`h_est` over the `commonValid` transects with an admissible root, as for
-Figure 9(a).
-
-```matlab
-outputs = generate_figure_11_velocity_variant(archiveRoot, ...
-    'C:\path\to\checkpoint_batch_initial_vs_accepted_velocity_summary.mat', ...
-    outputFolder, "VelocitySource", "initial");   % default
-```
-
-On the originating workstation, the default direct MAT-file link can be used
-by supplying only the archive root (and accepting the default output folder):
-
-```matlab
-outputs = generate_figure_11_velocity_variant(archiveRoot);
-```
-
-`"archived"` reproduces the deposited Figure 9/11 values without
-re-inversion and is the reference the other two sources are compared to.
-The function prints, per case, the maximum absolute difference between the
-archived per-transect velocity and each batch velocity, so the provenance
-of the deposited figure is checked rather than assumed. `"MaxDepth_m"`
-discards transect inversions deeper than a threshold (default `Inf`).
-
-Outputs: `wse_autocorrelation_depth_bias_amplification_<source>_velocity.{png,pdf}`,
-`figure_11_velocity_source_comparison_by_case.csv` (kh, ratio, IQR bars and
-implied velocity bias for all three sources, plus the ratio differences to
-the archived values) and `figure_11_velocity_source_comparison_by_transect.csv`.

@@ -19,8 +19,9 @@ function fig = plot_Us_vs_SWW(opts)
 %   figureHeightIn  figure height in inches (default: 3)
 %   saveFigure      save figure when true (default: false)
 %   outFigureFile   extensionless output filename
-%   tickFontSize    axis tick font size (default: 16)
-%   legendFontSize  legend font size (default: 16)
+%   tickFontSize    source tick font size for 0.6\textwidth (default: 18)
+%   labelFontSize   source label size for 0.6\textwidth (default: 20)
+%   legendFontSize  source legend size for 0.6\textwidth (default: 18)
 %
 % Output:
 %   fig   MATLAB figure handle.
@@ -85,23 +86,23 @@ U_pow = sqrt( ...
 
 %% Define curve colours
 
-% Generate separate colour scales for the three velocity-profile families.
-% Only the relative colour variation with depth is used here.
-colsk = brewermap(length(h) + 2, '-Greys');
-colsk = colsk(2:end-1, :);
-colsk = min(colsk * 1.1, 1);
+constantColour = [0 0 0];
+linearColour = [0 0 1];
+powerColour = [255 127 0] / 255;
 
-colsb = brewermap(length(h) + 2, '-Blues');
-colsb = colsb(2:end-1, :);
-colsb = min(colsb * 1.1, 1);
-
-colsr = brewermap(length(h) + 2, '-Oranges');
-colsr = colsr(2:end-1, :);
-colsr = min(colsr * 1.1, 1);
+% The figure is placed at 0.6\textwidth. Its exported bounding box includes
+% the right-hand depth labels, giving a measured final scale of about 0.5.
+% Pre-scale visual elements so their manuscript sizes match other figures.
+latexScale = 0.5;
+profileLineWidth = 1.0 / latexScale;
+deepLineWidth = 0.7 / latexScale;
+axesLineWidth = 0.8 / latexScale;
 
 %% Create figure
 
-fig = figure('Position',[100 100 700 400]);
+% Size the exported artwork for its full-width (5.5-inch) placement in
+% the AGU manuscript, avoiding enlargement of text and strokes by LaTeX.
+fig = figure('Position',[100 100 928 530]);
 
 ax1 = axes(fig);
 hold(ax1, 'on');
@@ -113,16 +114,16 @@ hold(ax1, 'on');
 for i = 1:length(h)
 
     p1{i}=plot(ax1, lambda, U_const(i, :), ...
-        'Color', colsk(2, :), ...
-        'LineWidth', 2);
+        'Color', constantColour, ...
+        'LineWidth', profileLineWidth);
 
     p2{i}=plot(ax1, lambda, U_lin(i, :), ...
-        'Color', colsb(2, :), ...
-        'LineWidth', 2);
+        'Color', linearColour, ...
+        'LineWidth', profileLineWidth);
 
     p3{i}=plot(ax1, lambda, U_pow(i, :), ...
-        'Color', colsr(2, :), ...
-        'LineWidth', 2);
+        'Color', powerColour, ...
+        'LineWidth', profileLineWidth);
 
 end
 
@@ -131,7 +132,7 @@ U_deep = sqrt(g / (2 * pi) .* lambda);
 
 p0 = plot(ax1, lambda, U_deep, ...
     'k--', ...
-    'LineWidth', 1);
+    'LineWidth', deepLineWidth);
 
 %% Configure primary axes
 
@@ -139,7 +140,10 @@ p0 = plot(ax1, lambda, U_deep, ...
 set(ax1, ...
     'XScale', 'log', ...
     'YScale', 'log', ...
-    'FontSize', opts.tickFontSize);
+    'FontSize', opts.tickFontSize, ...
+    'LineWidth', axesLineWidth, ...
+    'TickDir', 'out', ...
+    'Layer', 'top');
 
 ax1.XTick = [1e-1 1e0 1e1 1e2];
 
@@ -147,18 +151,23 @@ ax1.XTick = [1e-1 1e0 1e1 1e2];
 xlim(ax1, [1e-1 1e2]);
 ylim(ax1, [0.4 10]);
 
-xlabel(ax1, '$\lambda$ (m)', ...
-    'Interpreter', 'latex');
+xlabel(ax1, '$\lambda$ ($\mathrm{m}$)', ...
+    'Interpreter', 'latex', 'FontSize', opts.labelFontSize);
 
-ylabel(ax1, '$U_s$ (m s$^{-1}$)', ...
-    'Interpreter', 'latex');
+ylabel(ax1, '$U_s$ ($\mathrm{m}\,\mathrm{s}^{-1}$)', ...
+    'Interpreter', 'latex', 'FontSize', opts.labelFontSize);
 
 %% Legend
 
-lgd = legend([p0 , p1{2}, p2{2}, p3{2}],{'$\sqrt{g/k}$','constant','linear','power-funct.'},...
-    'Orientation','vertical','Location','EastOutside','interpreter','latex');
+lgd = legend([p0, p1{2}, p2{2}, p3{2}], ...
+    {'Deep-water limit', 'Constant profile', ...
+     'Linear profile', 'Power profile'}, ...
+    'Orientation', 'vertical', ...
+    'Location', 'northwest', ...
+    'Interpreter', 'none', ...
+    'FontSize', opts.legendFontSize, ...
+    'Box', 'off');
 lgd.Units = 'normalized';
-lgd.Position(1) = lgd.Position(1) + 0.02;
 
 %% Create secondary axes for water-depth labels
 
@@ -174,7 +183,10 @@ ax2 = axes( ...
     'YColor', 'k', ...
     'XScale', 'log', ...
     'YScale', 'log', ...
-    'FontSize', opts.tickFontSize);
+    'FontSize', opts.tickFontSize, ...
+    'LineWidth', axesLineWidth, ...
+    'TickDir', 'out', ...
+    'Layer', 'top');
 
 linkaxes([ax1 ax2], 'xy');
 
@@ -183,8 +195,9 @@ linkaxes([ax1 ax2], 'xy');
 yTicks = U_const(:, end);
 
 ax2.YTick = yTicks;
-ax2.YTickLabel = compose('h=%.1f m', h);
+ax2.YTickLabel = compose('$h=%.1f~\\mathrm{m}$', h);
 ax2.FontName = 'Times New Roman';
+ax2.TickLabelInterpreter = 'latex';
 
 % Keep the two axes exactly coincident.
 ax1.Position = [0.12 0.2 0.45 0.7];
@@ -200,6 +213,7 @@ ylim(ax2, ax1.YLim);
 %% Figure appearance
 
 set(fig, 'Color', 'w');
+
 
 %% Save figure
 
@@ -246,8 +260,9 @@ opts = default_field(opts, 'figureWidthIn', 8);
 opts = default_field(opts, 'figureHeightIn', 3);
 opts = default_field(opts, 'saveFigure', false);
 opts = default_field(opts, 'outFigureFile', '');
-opts = default_field(opts, 'tickFontSize', 16);
-opts = default_field(opts, 'legendFontSize', 16);
+opts = default_field(opts, 'tickFontSize', 9 / 0.5);
+opts = default_field(opts, 'labelFontSize', 10 / 0.5);
+opts = default_field(opts, 'legendFontSize', 9 / 0.5);
 
 end
 

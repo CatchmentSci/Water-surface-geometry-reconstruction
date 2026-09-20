@@ -1,3 +1,4 @@
 *.sh text eol=lf
 *.m text eol=lf
 *.tsv text eol=lf
+*.pdf binary

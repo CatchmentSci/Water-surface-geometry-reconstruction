@@ -157,7 +157,7 @@ selectorOpts.stabilityAssessmentMode = ...
 selectorOpts.firstSensedLength_m = 10;
 selectorOpts.cameraRowOrder = 'ascending';
 selectorOpts.displaySummary = false;
-selectorOpts.usePmusicWavelength = true;
+selectorOpts.usePmusicWavelength = false;
 selectorOpts.pmusicModelOrder = 2;
 selectorOpts.pmusicNfft = 2048;
 selectorOpts.pmusicWindowLength = [];
@@ -616,10 +616,10 @@ cb.Units = 'normalized';
 cb.Position = manualColorbarPosition;
 cb.FontName = fontName;
 cb.FontSize = axesFontSize;
+cb.Label.Interpreter = 'latex';
 cb.Label.String = '$\Delta z_{\mathrm{WSG}}$ (m)';
 cb.Label.FontName = fontName;
 cb.Label.FontSize = labelFontSize;
-cb.Label.Interpreter = 'latex';
 
 % Creating a colour bar can alter its associated axes. Reapply every
 % manually measured position after the colour bar has been created.

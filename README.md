@@ -15,28 +15,31 @@ Reproducibility workflows are currently available for:
 | Paper item | Repository location | Status |
 | --- | --- | --- |
 | Figure 1 | `code/figures/figure_01` | Complete; deterministic vector sampling |
-| Figure 2 | `code/figures/figure_02` | Final schematic deposited |
+| Figure 2 | `code/figures/figure_02` | Complete; final schematic deposited |
+| Figure 3 | `code/figures/figure_03` | Complete; theoretical relationships |
 | Figure 4 | `code/figures/figure_04` | Complete |
 | Figure 5 | `code/figures/figure_05` | Complete |
 | Figure 6 | `code/figures/figure_06` | Complete |
-| Figure 8 | `code/figures/figure_08` | Complete; initial-planar velocity |
-| Figure 9 | `code/figures/figure_09` | Complete; initial-planar velocity |
-| Figure 11 (Discussion, depth-bias amplification) | `code/figures/figure_11` | Complete; initial-planar velocity |
+| Figure 7 | `code/figures/figure_07` | Complete; KLT-IV surface velocity |
+| Figure 8 | `code/figures/figure_08` | Complete; KLT-IV surface velocity |
+| Figure 9 | `code/figures/figure_09` | Complete; KLT-IV surface velocity |
+| Figure 10 | `code/figures/figure_10` | Complete; KLT-IV velocity diagnostics |
+| Figure 11 (Discussion, depth-bias amplification) | `code/figures/figure_11` | Complete; KLT-IV surface velocity |
+| Figure A1 | `code/figures/figure_a1` | Complete; theoretical relationships |
+| Figure A2 | `code/figures/figure_a2` | Complete; theoretical relationships |
 | Table 3 | `code/tables/table_03` | Complete |
 | Table B1 | `code/tables/table_b1` | Complete |
 | Table C1 | `code/tables/table_c1` | Complete |
 
-The remaining figure directories are placeholders for workflows still to be
-added. Each completed directory contains its own README with exact archive
-inputs, outputs, software requirements, and run instructions.
+Each reproducible figure directory contains its own README with the required
+inputs, outputs, software requirements, and run instructions. Figure 2 is a
+final schematic rather than a data-driven MATLAB workflow.
 
-All velocity-dependent paper figures use
-`velocityOutTracked.start.u_streamwise_mps`, calculated by projecting the
-tracked paths onto the solver's initial planar water surface. Compact Figure
-8 and Figure 9 summaries carrying this choice are version controlled beside
-their plotting scripts. The Figure 9 workflow also includes a reproducible
-root-bracketing step and a per-transect audit table that distinguishes
-unique-root from multiple-root inversions.
+Velocity-dependent paper figures use KLT-IV surface velocities. Compact
+Figure 8 and Figure 9 summaries are version controlled beside their plotting
+scripts. The Figure 9 workflow also includes a reproducible root-bracketing
+step and a per-transect audit table that distinguishes unique-root from
+multiple-root inversions.
 
 ## Data availability
 
@@ -65,8 +68,8 @@ Add the final Zenodo DOI and citation here when the record is published.
 
 The operational solver and HPC workflows used MATLAB R2024a. Individual
 figure and table workflows specify their own toolbox requirements; some need
-the Image Processing Toolbox or Signal Processing Toolbox. The synthetic HPC
-workflow also uses Parallel Computing Toolbox.
+the Image Processing Toolbox. The synthetic HPC workflow also uses Parallel
+Computing Toolbox.
 
 ## Repository structure
 
@@ -111,7 +114,8 @@ outputs = generate_figure_05(archiveRoot, ...
 ```
 
 Generated `output` directories beside figure and table scripts are ignored by
-Git. Consult the README in the selected workflow directory before running it.
+Git, except for the final Figure 2 schematic. Consult the README in the
+selected workflow directory before running it.
 
 ## Solver and HPC workflows
 
@@ -141,9 +145,8 @@ limits, solver inputs, observations, and checkpoints. See
   density.
 - Table B1 uses accepted-WSG autocorrelation estimates for the 39 synthetic
   cases and reports hydraulic depth as `D`.
-- Table C1 combines accepted autocorrelation wave estimates with derived
-  velocities and initial-planar-velocity deep-branch depth results for stable
-  cases R1-R11.
+- Table C1 combines accepted autocorrelation wave estimates with KLT-IV
+  surface velocities and deep-branch depth results for stable cases R1-R11.
 
 ## Licence
 

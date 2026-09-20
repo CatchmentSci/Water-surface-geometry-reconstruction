@@ -53,7 +53,7 @@ alpha = opts.alpha;
 F2_const = tanh(kh)./kh;
 
 %% Linear velocity profile
-% 
+%
 
 m = 2*(1-alpha);
 
@@ -89,23 +89,26 @@ fig = figure('Color','w', ...
 ax1 = nexttile;
 hold on
 
-plot(kh,sqrt(F2_const),'k','LineWidth',1.5)
-plot(kh,sqrt(F2_lin),'b','LineWidth',1.5)
-plot(kh,sqrt(F2_pow),'color',org,'LineWidth',1.5)
-plot(kh,1./kh.^(1/2),'k--','LineWidth',1.5)
-
-set(ax1,'XScale','log')
-
-xlabel('$kh$','Interpreter','latex');
-ylabel('$\rm{Fr}$','Interpreter','latex');
+plot(kh,sqrt(F2_const),'k','LineWidth',1.2)
+plot(kh,sqrt(F2_lin),'b','LineWidth',1.2)
+plot(kh,sqrt(F2_pow),'color',org,'LineWidth',1.2)
+plot(kh,1./kh.^(1/2),'k--','LineWidth',0.8)
 
 set(ax1,'XScale','log', ...
         'XTick',[1e-1 1e0 1e1 1e2], ...
-        'FontSize',opts.tickFontSize);
+        'XTickLabelRotation',0, ...
+        'FontSize',opts.tickFontSize, ...
+        'LineWidth',0.8, ...
+        'TickDir','out', ...
+        'TickLabelInterpreter','tex', ...
+        'Layer','top');
 
-xlabel(ax1,'$kh$','Interpreter','latex');
-ylabel(ax1,'$Fr$','Interpreter','latex');
+xlabel(ax1,'$kh$','Interpreter','latex', ...
+    'FontSize',opts.labelFontSize);
+ylabel(ax1,'$\mathrm{Fr}$','Interpreter','latex', ...
+    'FontSize',opts.labelFontSize);
 ylim(ax1,[0 1.5]);
+axis(ax1,'square');
 
 add_panel_label(ax1,'(a)',opts);
 
@@ -114,19 +117,29 @@ add_panel_label(ax1,'(a)',opts);
 
 ax2 = nexttile(tl,2);
 hold(ax2,'on');
+ax1.Toolbar.Visible = 'off';
+ax2.Toolbar.Visible = 'off';
 
-p1 = plot(ax2,kh,sqrt(F2_const),'k','LineWidth',1.5);
-p2 = plot(ax2,kh,alpha*sqrt(F2_lin),'b','LineWidth',1.5);
-p3 = plot(ax2,kh,alpha*sqrt(F2_pow),'Color',org,'LineWidth',1.5);
-p4 = plot(ax2,kh,1./sqrt(kh),'k--','LineWidth',1.5);
+p1 = plot(ax2,kh,sqrt(F2_const),'k','LineWidth',1.2);
+p2 = plot(ax2,kh,alpha*sqrt(F2_lin),'b','LineWidth',1.2);
+p3 = plot(ax2,kh,alpha*sqrt(F2_pow),'Color',org,'LineWidth',1.2);
+p4 = plot(ax2,kh,1./sqrt(kh),'k--','LineWidth',0.8);
 
 set(ax2,'XScale','log', ...
     'XTick',[1e-1 1e0 1e1 1e2], ...
-    'FontSize',opts.tickFontSize);
+    'XTickLabelRotation',0, ...
+    'FontSize',opts.tickFontSize, ...
+    'LineWidth',0.8, ...
+    'TickDir','out', ...
+    'TickLabelInterpreter','tex', ...
+    'Layer','top');
 
-xlabel(ax2,'$kh$','Interpreter','latex');
-ylabel(ax2,'$\alpha Fr$','Interpreter','latex');
+xlabel(ax2,'$kh$','Interpreter','latex', ...
+    'FontSize',opts.labelFontSize);
+ylabel(ax2,'$\alpha\mathrm{Fr}$','Interpreter','latex', ...
+    'FontSize',opts.labelFontSize);
 ylim(ax2,[0 1.5]);
+axis(ax2,'square');
 
 add_panel_label(ax2,'(b)',opts);
 
@@ -134,12 +147,12 @@ add_panel_label(ax2,'(b)',opts);
 %% Legend
 
 lgd = legend(ax2,[p1 p2 p3 p4], ...
-    {'constant','linear','power-funct.','deep water'}, ...
+    {'Constant profile','Linear profile','Power profile','Deep-water limit'}, ...
     'Orientation','vertical', ...
+    'Interpreter','none', ...
+    'FontSize',opts.legendFontSize, ...
     'Box','off');
-
 lgd.Layout.Tile = 'east';
-lgd.FontSize = opts.legendFontSize;
 
 %% Save figure
 
@@ -181,9 +194,10 @@ function opts = set_plot_defaults(opts)
     opts = default_field(opts,'figureHeightIn',3);
     opts = default_field(opts,'saveFigure',false);
     opts = default_field(opts,'outFigureFile','');
-    opts = default_field(opts,'tickFontSize',16);
-    opts = default_field(opts,'legendFontSize',16);
-    opts = default_field(opts,'panelLabelFontSize',16);
+    opts = default_field(opts,'tickFontSize',13);
+    opts = default_field(opts,'labelFontSize',14);
+    opts = default_field(opts,'legendFontSize',13);
+    opts = default_field(opts,'panelLabelFontSize',14);
 end
 
 
@@ -197,9 +211,10 @@ end
 
 function add_panel_label(ax,txt,opts)
 
-    text(ax,0.9,0.98,txt, ...
+    text(ax,0.03,0.97,txt, ...
         'Units','normalized', ...
         'FontSize',opts.panelLabelFontSize, ...
+        'FontWeight','bold', ...
         'VerticalAlignment','top', ...
         'HorizontalAlignment','left', ...
         'Color','k');

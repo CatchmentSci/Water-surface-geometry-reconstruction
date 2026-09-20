@@ -41,8 +41,7 @@ lambdaMaxThreshold = 7;
 QThresholdAmpl = 20;
 
 org = [255,127,0] / 255;
-cmap = brewermap(256, 'RdBu');
-cmap = flipud(cmap);
+cmap = local_coolwarm(256);
 
 FS = 20;
 MS = 10;
@@ -51,11 +50,24 @@ MS = 10;
 
 inputDataFolder = char(opts.dataRoot);
 
+velocityTableFile = fullfile( ...
+    inputDataFolder, 'per_transect_initial_accepted.csv');
+
+if ~isfile(velocityTableFile)
+    matches = dir(fullfile( ...
+        inputDataFolder, '**', 'per_transect_initial_accepted.csv'));
+    if numel(matches) ~= 1
+        error('Expected one per_transect_initial_accepted.csv below %s.', ...
+            inputDataFolder);
+    end
+    velocityTableFile = fullfile(matches(1).folder, matches(1).name);
+    inputDataFolder = matches(1).folder;
+end
+
 dataFolderProfiles = fullfile( ...
     inputDataFolder, 'real_selected_map_profile_csvs');
 
-dsv = readtable(fullfile( ...
-    inputDataFolder, 'per_transect_initial_accepted.csv'));
+dsv = readtable(velocityTableFile);
 
 stats = readtable(fullfile( ...
     inputDataFolder, 'Dart_video_statistics.xlsx'));
@@ -117,7 +129,7 @@ for id = 1:nCases
     velIndx = find(dsv.xCase == "R" + id);
 
     if ~isempty(velIndx)
-        vel = dsv.U_accepted(velIndx);
+        vel = dsv.U_initial(velIndx);
         csVel{id} = vel;
     else
         csVel{id} = nan;
@@ -268,12 +280,12 @@ fprintf('R2 amplitude fitting = %.2f\n', R2);
 %     'Units', 'inches', ...
 %     'Position', [1 1 5 3.5], ...
 %     'Color', 'w');
-% 
+%
 % ax = axes(fg);
 % hold(ax, 'on');
-% 
+%
 % for id = 1:nCases
-% 
+%
 %     errorbar(ax, ...
 %         depthMean(id), dEstMean(id), ...
 %         dEstMean(id) - dEstMin(id), ...
@@ -283,38 +295,38 @@ fprintf('R2 amplitude fitting = %.2f\n', R2);
 %         'ko', ...
 %         'MarkerSize', MS, ...
 %         'MarkerFaceColor', QColor(id, :));
-% 
+%
 % end
-% 
+%
 % plot(ax, [0 3], [0 3], 'k--', 'LineWidth', 1);
-% 
+%
 % xlabel(ax, '$d$ (m)', 'Interpreter', 'latex');
 % ylabel(ax, '$d_{\rm est}$ (m)', 'Interpreter', 'latex');
-% 
+%
 % colormap(ax, cmap);
 % clim(ax, [Qmin Qmax]);
-% 
+%
 % cb = colorbar(ax);
 % cb.Label.String = '$Q$ (m$^3$ s$^{-1}$)';
 % cb.Label.Interpreter = 'latex';
 % cb.Label.FontSize = FS;
-% 
+%
 % set(ax, ...
 %     'FontSize', FS, ...
 %     'Position', [0.2 0.25 0.5 0.65]);
-% 
+%
 % if opts.saveFigure
-% 
+%
 %     exportgraphics(fg, ...
 %         [opts.outFigureFileA '.png'], ...
 %         'ContentType', 'vector', ...
 %         'Resolution', 600);
-% 
+%
 %     exportgraphics(fg, ...
 %         [opts.outFigureFileA '.pdf'], ...
 %         'ContentType', 'vector', ...
 %         'Resolution', 600);
-% 
+%
 % end
 
 %% Figure 7: combined figure
@@ -366,6 +378,7 @@ set(ax1, 'FontSize', FS, 'XTick' , [0 2 4 6]);
 legend(ax1, th1, 'Eq. (8)', ...
     'FontSize', FS, ...
     'Interpreter', 'latex', ...
+    'Box', 'off', ...
     'Location', 'SouthEast');
 
 add_panel_label(ax1, '(a)', FS);
@@ -409,6 +422,7 @@ legend(ax2, ...
     {'Eq. (10a)', 'Eq. (10b)', 'Eq. (10c)'}, ...
     'FontSize', FS, ...
     'Interpreter', 'latex', ...
+    'Box', 'off', ...
     'Location', 'NorthEast');
 
 set(ax2, 'FontSize', FS);
@@ -455,11 +469,12 @@ legend(ax3, ...
     {'Eq. (11)', 'Eq. (12)'}, ...
     'FontSize', FS, ...
     'Interpreter', 'latex', ...
+    'Box', 'off', ...
     'Location', 'NorthEast');
 
 set(ax3, 'FontSize', FS);
 
-add_panel_label(ax3, '(c)', FS);
+add_panel_label(ax3, '(c)', FS, -0.42);
 
 %% Shared colour scale
 
@@ -470,6 +485,7 @@ cb.Layout.Tile = 'south';
 cb.Label.String = '$Q$ (m$^3$ s$^{-1}$)';
 cb.Label.Interpreter = 'latex';
 cb.Label.FontSize = FS;
+cb.FontSize = FS;
 cb.TickDirection = 'out';
 
 clim([min(Q,[],'omitnan') max(Q,[],'omitnan')]);
@@ -522,11 +538,32 @@ end
 
 %% Local functions
 
-function add_panel_label(ax, label, fontSize)
+function add_panel_label(ax, label, fontSize, xPosition)
 
-text(ax, -0.3, 1.0, label, ...
+if nargin < 4
+    xPosition = -0.3;
+end
+
+text(ax, xPosition, 1.0, label, ...
     'Units', 'normalized', ...
     'FontSize', fontSize, ...
-    'Interpreter', 'latex');
+    'FontWeight', 'bold', ...
+    'Interpreter', 'none', ...
+    'Clipping', 'off');
 
+end
+
+function map = local_coolwarm(m)
+if nargin < 1 || isempty(m)
+    m = 256;
+end
+if m <= 0
+    map = zeros(0, 3);
+    return
+end
+anchors = [59 76 192; 84 112 222; 129 164 251; 180 205 251; ...
+    221 221 221; 241 184 156; 229 112 88; 203 62 56; 180 4 38] ./ 255;
+map = interp1(linspace(0, 1, size(anchors, 1)), anchors, ...
+    linspace(0, 1, m), "linear");
+map = max(0, min(1, map));
 end

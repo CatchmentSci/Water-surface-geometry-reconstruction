@@ -7,6 +7,7 @@ dens=998.2; %(kg/m^3), ref. 20deg
 wavelength=nan(size(depth));
 
 k0init = 2*pi;
+rootOptions = optimset('Display','off');
 
 switch vel_profile
     case 'constant'
@@ -32,10 +33,10 @@ end
 for idepth = 1:size(depth,2)
     for ivel = 1:size(vel,1)
         d = depth(ivel,idepth);
-        v = vel(ivel,idepth); 
+        v = vel(ivel,idepth);
         if v^2./(g*d)<=1 % only consider sub-critical Froude number conditions
-        k0(ivel,idepth) = fzero(@(k) fun(k,d) - v^2, k0init);
-        else 
+        k0(ivel,idepth) = fzero(@(k) fun(k,d) - v^2, k0init, rootOptions);
+        else
             k0(ivel,idepth) = NaN;
         end
     end

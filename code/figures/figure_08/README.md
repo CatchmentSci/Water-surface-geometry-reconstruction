@@ -1,8 +1,7 @@
 # Figure 08
 
-`generate_figure_08.m` reproduces Figure 8 using the streamwise velocity
-calculated on the initial planar water surface,
-`velocityOutTracked.start.u_streamwise_mps`.
+`generate_figure_08.m` reproduces Figure 8 using KLT-IV streamwise surface
+velocities.
 
 The panels show:
 
@@ -24,7 +23,7 @@ The function loads the version-controlled compact summary:
 `data/wse_autocorrelation_velocity_method_sensitivity_summary.mat`
 
 The MAT-file contains the final 13-case validation and sensitivity tables,
-per-transect initial-planar velocities, and the inclusion mask. Reproducing
+per-transect KLT-IV surface velocities, and the inclusion mask. Reproducing
 Figure 8 does not rerun the KLT solver or wavelength analysis.
 
 ## Run
@@ -42,9 +41,8 @@ outputs = generate_figure_08( ...
 If the second argument is omitted, output is written to an `output` directory
 beside the script. The generated output is ignored by Git.
 
-The function creates
-`wse_autocorrelation_velocity_validation_and_sensitivity.png` at 600 dpi and
-the corresponding vector PDF.
+The function creates `Figure8.png` at 600 dpi and `Figure8.pdf` as vector
+graphics.
 
 ## Software
 

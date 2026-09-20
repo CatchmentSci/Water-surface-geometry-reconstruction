@@ -13,7 +13,7 @@ if ~isfolder(outputDir)
     mkdir(outputDir);
 end
 
-outputBase = fullfile(outputDir,'Figurea1');
+outputBase = fullfile(outputDir,'FigureA1');
 
 opts = struct( ...
     'saveFigure',true, ...

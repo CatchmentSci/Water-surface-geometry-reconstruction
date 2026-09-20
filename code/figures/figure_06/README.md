@@ -63,4 +63,3 @@ discharges and accepted map indices.
 
 - MATLAB R2024a or later
 - Image Processing Toolbox
-- Signal Processing Toolbox

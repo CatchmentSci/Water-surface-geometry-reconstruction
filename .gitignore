@@ -20,6 +20,8 @@ desktop.ini
 
 # Generated figure products
 code/figures/*/output/
+!code/figures/figure_02/output/
+!code/figures/figure_02/output/Figure2.pdf
 
 # Generated table products
 code/tables/*/output/

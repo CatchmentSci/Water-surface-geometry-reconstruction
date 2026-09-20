@@ -1,8 +1,7 @@
 # Figure 09
 
 `generate_figure_09.m` reproduces Figure 9 from depth solutions re-inverted
-using `velocityOutTracked.start.u_streamwise_mps`, calculated on the initial
-planar water surface.
+using KLT-IV surface velocities.
 
 Panels (a), (b), and (c) compare surveyed cross-section depth, `h`, with the
 selected inverse-depth solution, `h_est`, obtained using uniform, linear, and
@@ -52,9 +51,8 @@ outputs = generate_figure_09( ...
 If the second argument is omitted, output is written to an `output` directory
 beside the script. Generated output is ignored by Git.
 
-The plotting function creates
-`wse_autocorrelation_uniform_linear_power_depth_deep_solutions.png` at 600
-dpi and the corresponding vector PDF.
+The plotting function creates `Figure9.png` at 600 dpi and `Figure9.pdf` as
+vector graphics.
 
 ## Software
 

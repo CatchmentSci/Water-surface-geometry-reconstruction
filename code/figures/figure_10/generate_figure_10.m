@@ -7,7 +7,7 @@ function outputs = generate_figure_10(dataRoot, outputDir)
 %
 % Example:
 %   generate_figure_10("C:\path\to\figure_10_data", ...
-%                     "C:\path\to\figure_07_output")
+%                     "C:\path\to\figure_10_output")
 
 arguments
     dataRoot (1,1) string

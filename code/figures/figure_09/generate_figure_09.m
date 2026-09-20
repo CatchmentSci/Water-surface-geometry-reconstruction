@@ -60,10 +60,10 @@ cfg = struct;
 cfg.figureWidth_in = 6.6;
 cfg.figureHeight_in = 3.00;
 cfg.figureResolution_dpi = 600;
-cfg.axesFontSize = 8.5;
-cfg.labelFontSize = 9.5;
-cfg.panelLabelFontSize = 9;
-cfg.colorbarFontSize = 8.5;
+cfg.axesFontSize = 11;
+cfg.labelFontSize = 12;
+cfg.panelLabelFontSize = 12;
+cfg.colorbarFontSize = 11;
 cfg.markerArea = 28;
 cfg.errorColour = [0.62 0.62 0.62];
 

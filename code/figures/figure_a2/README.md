@@ -1,6 +1,6 @@
 # Standing-wave wavelength as a function of water depth
 
-`generate_figure_SWW_vs_depth.m` reproduces the figure showing the theoretical
+`generate_figure_a2.m` reproduces the figure showing the theoretical
 relationship between standing-wave wavelength and water depth for several
 surface flow velocities and three assumed vertical velocity profiles.
 
@@ -12,11 +12,18 @@ The figure includes:
 - constant, linear, and power-law vertical velocity profiles; and
 - reference lines of constant Froude number.
 
+Profile families are distinguished by colour. Forward wavelength calculations
+and inverse depth reconstructions use a common solid line style, while grey
+dashed lines show constant-Froude references.
+The plot retains the original figure dimensions, axis positions,
+limits, logarithmic scaling, and automatic tick placement.
+Typography is sized for inclusion at `0.85\textwidth` in the manuscript.
+
 The calculations do not require external input data.
 
 ## Included analysis code
 
-- `generate_figure_SWW_vs_depth.m` is the reproducibility entry point and
+- `generate_figure_a2.m` is the reproducibility entry point and
   specifies the output location.
 - `plot_SWW_vs_depth.m` performs the theoretical calculations, constructs the
   figure, and exports the results.
@@ -43,8 +50,6 @@ within the prescribed bounds.
 
 - MATLAB R2024a or later
 - Chebfun
-- `brewermap` (cmocean/ColorBrewer-compatible colormap utility used for the
-  figure colours)
 
 The helper functions `expected_wavelength.m`, `reconstr_depth.m`, and
 `expected_kh.m` must be available on the MATLAB path.
@@ -55,7 +60,11 @@ In MATLAB, from any working directory:
 
 ```matlab
 repoRoot = 'C:\path\to\repository';
-addpath(fullfile(repoRoot, 'code', 'figures', 'SWW_vs_depth'))
+addpath(fullfile(repoRoot, 'code', 'figures', 'figure_a2'))
 
-outputs = generate_figure_SWW_vs_depth( ...
+outputs = generate_figure_a2( ...
     'C:\path\to\figure_output');
+```
+
+The generator writes `FigureA2.png` and `FigureA2.pdf` to the
+requested output directory.

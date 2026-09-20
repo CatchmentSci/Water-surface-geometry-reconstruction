@@ -1,7 +1,7 @@
 function outputs = plot_figure_10(opts)
 %PLOT_FIGURE_10 Compare predicted depth based on empirical relationship with observed one.
 %
-% This function reproduces Figure 10, comparing observed depth with 
+% This function reproduces Figure 10, comparing observed depth with
 % prediction based on water-surface wavelength and amplitude.
 %
 % Required input files:
@@ -41,21 +41,43 @@ lambdaMaxThreshold = 7;
 QThresholdAmpl = 20;
 
 org = [255,127,0] / 255;
-cmap = brewermap(256, 'RdBu');
-cmap = flipud(cmap);
+cmap = local_coolwarm(256);
 
-FS = 20;
-MS = 10;
+% The AGU manuscript displays this 4-inch-wide figure at 0.6 of its
+% 5.5-inch text width. Scale the artwork so its final sizes match the
+% full-width figures (9/10-pt text and 30-pt^2 markers).
+latexScale = (0.6 * 5.5) / 4.0;
+axesFontSize = 9 / latexScale;
+labelFontSize = 10 / latexScale;
+colorbarFontSize = 9 / latexScale;
+MS = sqrt(30) / latexScale;
+axesLineWidth = 0.8 / latexScale;
+dataLineWidth = 0.7 / latexScale;
+errorColour = [0.62 0.62 0.62];
+markerEdgeColour = [0.15 0.15 0.15];
 
 %% Input files
 
 inputDataFolder = char(opts.dataRoot);
 
+velocityTableFile = fullfile( ...
+    inputDataFolder, 'per_transect_initial_accepted.csv');
+
+if ~isfile(velocityTableFile)
+    matches = dir(fullfile( ...
+        inputDataFolder, '**', 'per_transect_initial_accepted.csv'));
+    if numel(matches) ~= 1
+        error('Expected one per_transect_initial_accepted.csv below %s.', ...
+            inputDataFolder);
+    end
+    velocityTableFile = fullfile(matches(1).folder, matches(1).name);
+    inputDataFolder = matches(1).folder;
+end
+
 dataFolderProfiles = fullfile( ...
     inputDataFolder, 'real_selected_map_profile_csvs');
 
-dsv = readtable(fullfile( ...
-    inputDataFolder, 'per_transect_initial_accepted.csv'));
+dsv = readtable(velocityTableFile);
 
 stats = readtable(fullfile( ...
     inputDataFolder, 'Dart_video_statistics.xlsx'));
@@ -117,7 +139,7 @@ for id = 1:nCases
     velIndx = find(dsv.xCase == "R" + id);
 
     if ~isempty(velIndx)
-        vel = dsv.U_accepted(velIndx);
+        vel = dsv.U_initial(velIndx);
         csVel{id} = vel;
     else
         csVel{id} = nan;
@@ -268,11 +290,17 @@ fprintf('R2 amplitude fitting = %.2f\n', R2);
 
 fg = figure( ...
     'Units', 'inches', ...
-    'Position', [1 1 5 3.5], ...
+    'Position', [1 1 4.0 3.15], ...
+    'PaperPositionMode', 'auto', ...
     'Color', 'w');
 
 ax = axes(fg);
 hold(ax, 'on');
+
+plot(ax, [1 3], [1 3], '--', ...
+    'Color', [0.20 0.20 0.20], ...
+    'LineWidth', axesLineWidth, ...
+    'HandleVisibility', 'off');
 
 for id = 1:nCases
 
@@ -282,28 +310,40 @@ for id = 1:nCases
         dEstMax(id) - dEstMean(id), ...
         depthMean(id) - depthMin(id), ...
         depthMax(id) - depthMean(id), ...
-        'ko', ...
+        'o', ...
+        'Color', errorColour, ...
+        'LineStyle', 'none', ...
         'MarkerSize', MS, ...
-        'MarkerFaceColor', QColor(id, :));
+        'MarkerEdgeColor', markerEdgeColour, ...
+        'MarkerFaceColor', QColor(id, :), ...
+        'LineWidth', dataLineWidth);
 
 end
 
-plot(ax, [0 3], [0 3], 'k--', 'LineWidth', 1);
-
-xlabel(ax, '$h$ (m)', 'Interpreter', 'latex');
-ylabel(ax, '$h_{\rm est}$ (m)', 'Interpreter', 'latex');
+xlabel(ax, '$h$ ($\mathrm{m}$)', ...
+    'Interpreter', 'latex', 'FontSize', labelFontSize);
+ylabel(ax, '$h_{\mathrm{est}}$ ($\mathrm{m}$)', ...
+    'Interpreter', 'latex', 'FontSize', labelFontSize);
 
 colormap(ax, cmap);
 clim(ax, [Qmin Qmax]);
 
-cb = colorbar(ax);
-cb.Label.String = '$Q$ (m$^3$ s$^{-1}$)';
+cb = colorbar(ax, 'eastoutside');
 cb.Label.Interpreter = 'latex';
-cb.Label.FontSize = FS;
+cb.Label.String = '$Q\;(\mathrm{m}^{3}\,\mathrm{s}^{-1})$';
+cb.Label.FontSize = labelFontSize;
+cb.FontSize = colorbarFontSize;
+cb.TickLabelInterpreter = 'tex';
+cb.TickDirection = 'out';
 
-set(ax, ...
-    'FontSize', FS, ...
-    'Position', [0.2 0.25 0.5 0.65]);
+xlim(ax, [1 3]);
+ylim(ax, [1 3]);
+xticks(ax, 1:1:3);
+yticks(ax, 1:1:3);
+axis(ax, 'square');
+box(ax, 'on');
+set(ax, 'FontSize', axesFontSize, 'LineWidth', axesLineWidth, ...
+    'TickDir', 'out', 'TickLabelInterpreter', 'tex', 'Layer', 'top');
 
 if opts.saveFigure
 
@@ -361,4 +401,19 @@ text(ax, -0.3, 1.0, label, ...
     'FontSize', fontSize, ...
     'Interpreter', 'latex');
 
+end
+
+function map = local_coolwarm(m)
+if nargin < 1 || isempty(m)
+    m = 256;
+end
+if m <= 0
+    map = zeros(0, 3);
+    return
+end
+anchors = [59 76 192; 84 112 222; 129 164 251; 180 205 251; ...
+    221 221 221; 241 184 156; 229 112 88; 203 62 56; 180 4 38] ./ 255;
+map = interp1(linspace(0, 1, size(anchors, 1)), anchors, ...
+    linspace(0, 1, m), "linear");
+map = max(0, min(1, map));
 end

@@ -20,14 +20,12 @@ outputs = generate_figure_03( ...
     'C:\path\to\figure_03_output');
 ```
 
-If the second argument is omitted, output is written to an `output` directory
+If the argument is omitted, output is written to an `output` directory
 beside the scripts. Generated output is ignored by Git.
 
 The function creates `Figure3.png` at 600 dpi and `Figure3.pdf` as vector
 graphics.
-  and constructs the first-10-m transect geometry from checkpoint data.
 
 ## Software
 
 - MATLAB R2024a or later
-- Image Processing Toolbox

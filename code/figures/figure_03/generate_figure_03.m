@@ -1,5 +1,5 @@
 function outputs = generate_figure_03(outputDir)
-%GENERATE_FIGURE_KH_VS_F Reproduce the kh-Fr relationship figure.
+%GENERATE_FIGURE_KH_VS_F Reproduce the accepted kh-Fr figure.
 
 arguments
     outputDir (1,1) string = string(fullfile( ...

@@ -2,8 +2,8 @@
 
 `generate_table_c1.m` reproduces Appendix Table C1 for the stable real-world
 cases R1-R11. It combines accepted autocorrelation wave estimates with
-derived velocities and the initial-planar-velocity inverse-depth summary used
-for Figures 8 and 9.
+derived velocities and the KLT-IV-based inverse-depth summary used for Figures
+8 and 9.
 
 ## Required inputs
 
@@ -17,13 +17,12 @@ workflows:
 - `code/figures/figure_08/data/wse_autocorrelation_velocity_method_sensitivity_summary.mat`;
 - `code/figures/figure_09/data/wse_autocorrelation_uniform_linear_power_depth_summary.csv`.
 
-The MAT-file supplies accepted-WSG autocorrelation wavelengths and the
-initial-planar tracked velocities. The amplitude summary supplies the robust
-WSG amplitude. The depth summary supplies medians recalculated using
-`velocityOutTracked.start.u_streamwise_mps`. For each transect, it uses the
-largest admissible root where multiple roots exist and the sole admissible
-root otherwise; a case median can therefore combine deep-branch and
-unique-root estimates.
+The MAT-file supplies accepted-WSG autocorrelation wavelengths and KLT-IV
+surface velocities. The amplitude summary supplies the robust WSG amplitude.
+The depth summary supplies the corresponding inverse-depth medians. For each
+transect, it uses the largest admissible root where multiple roots exist and
+the sole admissible root otherwise; a case median can therefore combine
+deep-branch and unique-root estimates.
 
 ## Run
 

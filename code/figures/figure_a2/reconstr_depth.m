@@ -26,7 +26,7 @@ nu_den = - s*(0.5 + n); % order of the modified Bessel function
 
 for ik = 1:length(wavenumber)
     k = wavenumber(ik);
-    v = vel(ik); 
+    v = vel(ik);
 
 switch vel_profile
 
