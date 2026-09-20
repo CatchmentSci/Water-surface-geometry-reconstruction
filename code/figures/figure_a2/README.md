@@ -49,7 +49,12 @@ within the prescribed bounds.
 ## Dependencies
 
 - MATLAB R2024a or later
-- Chebfun
+- Chebfun 5.7.0, matching the version used for this analysis. Download and
+  installation instructions are available from the
+  [official Chebfun website](https://www.chebfun.org/download/); the archived
+  [Chebfun 5.7.0 release](https://github.com/chebfun/chebfun/releases/tag/v5.7.0)
+  should be used for exact reproduction. Add the Chebfun root directory to
+  the MATLAB path before running the figure generator.
 
 The helper functions `expected_wavelength.m`, `reconstr_depth.m`, and
 `expected_kh.m` must be available on the MATLAB path.
