@@ -43,7 +43,7 @@ arguments
     outputDir (1,1) string = string(fullfile(fileparts(mfilename('fullpath')), 'output'))
 end
 
-inputFolder = char(fullfile(dataRoot, 'videos', 'outputs'));
+inputFolder = char(fullfile(dataRoot, 'videos', 'checkpoints'));
 outputFolder = char(outputDir);
 
 thisScriptDir = fileparts(mfilename('fullpath'));

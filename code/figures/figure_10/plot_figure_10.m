@@ -7,7 +7,7 @@ function outputs = plot_figure_10(opts)
 % Required input files:
 %   per_transect_initial_accepted.csv
 %   Dart_video_statistics.xlsx
-%   real_selected_map_profile_csvs/*.csv
+%   videos/derived/profiles/*.csv
 %
 % Required function:
 %   Fr_calc.m
@@ -75,7 +75,18 @@ if ~isfile(velocityTableFile)
 end
 
 dataFolderProfiles = fullfile( ...
-    inputDataFolder, 'real_selected_map_profile_csvs');
+    inputDataFolder, 'profiles');
+
+if ~isfolder(dataFolderProfiles)
+    profileMatches = dir(fullfile(char(opts.dataRoot), '**', ...
+        'profiles', '*.csv'));
+    profileFolders = unique(string({profileMatches.folder}));
+    if numel(profileFolders) ~= 1
+        error('Expected one derived profiles folder below %s.', ...
+            opts.dataRoot);
+    end
+    dataFolderProfiles = char(profileFolders(1));
+end
 
 dsv = readtable(velocityTableFile);
 

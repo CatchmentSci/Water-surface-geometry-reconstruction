@@ -40,12 +40,12 @@ end
 archiveRoot = string(archiveRoot);
 outputFolder = string(outputFolder);
 scriptFolder = string(fileparts(mfilename("fullpath")));
-outputRoot = fullfile(archiveRoot, "videos", "outputs");
+tableRoot = fullfile(archiveRoot, "videos", "derived", "tables");
 depthFile = fullfile(scriptFolder, "..", "figure_09", "data", ...
     "wse_autocorrelation_uniform_linear_power_depth_summary.csv");
 velocityFile = fullfile(scriptFolder, "..", "figure_08", "data", ...
     "wse_autocorrelation_velocity_method_sensitivity_summary.mat");
-tableC1File = fullfile(outputRoot, "table_c1_real_wave_hydraulic_results.csv");
+tableC1File = fullfile(tableRoot, "table_c1_real_wave_hydraulic_results.csv");
 requiredFiles = [depthFile, velocityFile, tableC1File];
 for ii = 1:numel(requiredFiles)
     if ~isfile(requiredFiles(ii))

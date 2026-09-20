@@ -11,9 +11,9 @@ Point the function at the root of the extracted Zenodo archive. It reads:
 - `videos/inputs/Dart_video_hydraulic_statistics.csv`;
 - `videos/inputs/klt_analysis_case_lookup.tsv`;
 - `videos/inputs/sweep_limits.csv`; and
-- `videos/outputs/real_wave_wse_pmusic_summary.csv`, which records the
+- `videos/derived/summaries/real_accepted_wsg_summary.csv`, which records the
   accepted WSG map for each case; and
-- the 13 `<video_identifier>_checkpoint.mat` files in `videos/outputs`.
+- the 13 `<video_identifier>_checkpoint.mat` files in `videos/checkpoints`.
 
 The hydraulic CSV supplies discharge, flow exceedance, hydraulic depth,
 section-averaged velocity, Froude number, and the Reynolds number based on

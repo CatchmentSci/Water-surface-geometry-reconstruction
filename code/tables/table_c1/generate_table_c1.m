@@ -9,12 +9,12 @@ arguments
     outputFolder (1, 1) string = fullfile(fileparts(mfilename('fullpath')), "output")
 end
 
-outputRoot = fullfile(string(archiveRoot), "videos", "outputs");
+summaryRoot = fullfile(string(archiveRoot), "videos", "derived", "summaries");
 scriptFolder = string(fileparts(mfilename("fullpath")));
 figureRoot = fullfile(scriptFolder, "..", "..", "figures");
 velocityFile = fullfile(figureRoot, "figure_08", "data", ...
     "wse_autocorrelation_velocity_method_sensitivity_summary.mat");
-amplitudeFile = fullfile(outputRoot, "real_wave_wse_pmusic_summary.csv");
+amplitudeFile = fullfile(summaryRoot, "real_accepted_wsg_summary.csv");
 depthFile = fullfile(figureRoot, "figure_09", "data", ...
     "wse_autocorrelation_uniform_linear_power_depth_summary.csv");
 requiredFiles = [velocityFile, amplitudeFile, depthFile];

@@ -8,7 +8,7 @@ real-video case `devon_dart20180315_08180` (R9).
 Point the function at the root of the extracted Zenodo archive. It loads:
 
 - `videos/inputs/devon_dart20180315_08180_solver_inputs.mat`
-- `videos/outputs/devon_dart20180315_08180_checkpoint.mat`
+- `videos/checkpoints/devon_dart20180315_08180_checkpoint.mat`
 
 The video itself and the velocity-input MAT file are not required for this
 figure because the displayed frame, camera model and flow-vector coordinates

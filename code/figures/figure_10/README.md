@@ -24,16 +24,16 @@ displayed sizes match the full-width figures.
 
 These data are supplied by the associated Zenodo repository rather than
 duplicated in this code directory. Point the function at the root of that
-dataset; it searches subfolders for `per_transect_initial_accepted.csv` and
-then loads the following files from the same input-data location:
+dataset. It searches subfolders independently for the velocity table and
+derived profile-summary directory, and loads:
 
 `per_transect_initial_accepted.csv`
 
 `Dart_video_statistics.xlsx`
 
-and the profile-summary CSV files contained in:
+and the derived profile-summary CSV files contained in:
 
-`real_selected_map_profile_csvs/`
+`videos/derived/profiles/`
 
 The profile files are matched to the observations using the video date and
 time recorded in `Dart_video_statistics.xlsx`.

@@ -13,12 +13,13 @@ end
 archiveRoot = string(archiveRoot);
 outputFolder = string(outputFolder);
 inputFolder = fullfile(archiveRoot, "videos", "inputs");
-checkpointFolder = fullfile(archiveRoot, "videos", "outputs");
+checkpointFolder = fullfile(archiveRoot, "videos", "checkpoints");
+summaryFolder = fullfile(archiveRoot, "videos", "derived", "summaries");
 
 hydraulicFile = fullfile(inputFolder, "Dart_video_hydraulic_statistics.csv");
 lookupFile = fullfile(inputFolder, "klt_analysis_case_lookup.tsv");
 sweepFile = fullfile(inputFolder, "sweep_limits.csv");
-selectionFile = fullfile(checkpointFolder, "real_wave_wse_pmusic_summary.csv");
+selectionFile = fullfile(summaryFolder, "real_accepted_wsg_summary.csv");
 requiredFiles = [hydraulicFile, lookupFile, sweepFile, selectionFile];
 for ii = 1:numel(requiredFiles)
     if ~isfile(requiredFiles(ii))

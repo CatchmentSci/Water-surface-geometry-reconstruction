@@ -9,7 +9,7 @@ derived velocities and the KLT-IV-based inverse-depth summary used for Figures
 
 The accepted-map amplitude summary is read from the extracted Zenodo archive:
 
-- `videos/outputs/real_wave_wse_pmusic_summary.csv`.
+- `videos/derived/summaries/real_accepted_wsg_summary.csv`.
 
 The velocity and depth summaries are version controlled with their figure
 workflows:

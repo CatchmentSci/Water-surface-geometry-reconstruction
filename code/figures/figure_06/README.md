@@ -18,7 +18,7 @@ case-number lookup from:
 
 Lookup SHA-256: `A8363B051FC8D739E0DC73E88A92018690AB0147F9A0FBBBC3B7F031CB02C88D`
 
-and the following files from `videos/outputs`:
+and the following files from `videos/checkpoints`:
 
 | Case | Discharge (m3 s-1) | Checkpoint file | SHA-256 |
 | --- | ---: | --- | --- |

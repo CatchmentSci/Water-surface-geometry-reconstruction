@@ -41,7 +41,7 @@ The KLT-IV velocity-validation summary is bundled with Figure 8:
 
 `../figure_08/data/wse_autocorrelation_velocity_method_sensitivity_summary.mat`
 
-`videos/outputs/table_c1_real_wave_hydraulic_results.csv`
+`videos/derived/tables/table_c1_real_wave_hydraulic_results.csv`
 
 SHA-256:
 
