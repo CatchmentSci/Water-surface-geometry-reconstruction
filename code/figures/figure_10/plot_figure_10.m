@@ -190,6 +190,8 @@ for id = 1:nCases
 
     % Wavelength
     lambda = ds.autocorrWavelength_m;
+    peakR = ds.autocorrPeakR;
+    lambda = accepted_autocorr_wavelengths(lambda, peakR);
     lambda(lambda > lambdaMaxThreshold) = NaN;
     lambda(lambda < lambdaMinThreshold) = NaN;
 
@@ -260,6 +262,7 @@ for i=1:size(C,1)
     for ii=idx_test
     % invert to estimate depth of testing set
         pfitInv = (csAmpl{ii}/c1(i)) .^(1/c2(i)) .* csLambda{ii} / (2*pi);
+        pfitInv(pfitInv > 10) = NaN; % rejects unreasonably high depth estimations > 10 m
         dEstCv{ii} = [dEstCv{ii} ; pfitInv];
         LocalErr = [LocalErr; pfitInv - csDepth{ii}];
         LocalErrRelative = [LocalErrRelative; (pfitInv - csDepth{ii})./csDepth{ii}];
@@ -423,6 +426,35 @@ end
 
 
 %% Local functions
+
+function lambda = accepted_autocorr_wavelengths(lambda, peakR)
+
+lambda = double(lambda(:));
+
+peakR = double(peakR(:));
+
+lambda(~isfinite(lambda) | lambda <= 0 | ...
+    ~isfinite(peakR) | peakR < 0.10) = NaN;
+
+idx = find(isfinite(lambda));
+
+if numel(idx) >= 8
+
+    values = lambda(idx);
+
+    centre = median(values, 'omitnan');
+
+    scaledMad = 1.4826 .* median(abs(values-centre), 'omitnan');
+
+    if isfinite(scaledMad) && scaledMad > 0
+
+        lambda(idx(abs(values-centre) > 3.5.*scaledMad)) = NaN;
+
+    end
+
+end
+
+end
 
 function add_panel_label(ax, label, fontSize)
 
