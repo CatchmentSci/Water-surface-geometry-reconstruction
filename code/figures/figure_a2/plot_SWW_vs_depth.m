@@ -107,7 +107,7 @@ h_pow(h_pow <= 0) = NaN;
 
 Fr = [0.3 0.4 0.55 0.75 0.90 0.97 0.99];
 
-kh = expected_kh(Fr,1,'constant');
+kh = expected_kh(Fr,'constant');
 
 %% Colours
 
