@@ -1,25 +1,18 @@
 function wavelength = expected_wavelength(depth,vel,alpha,vel_profile)
 
 g=9.81;
-surf_tens=72.75e-03; %(N/m), ref. 20deg, from Vargaftik et al., 1983 - International tables of the surface tension of water, J.Phys.Chem.Ref.Data
-dens=998.2; %(kg/m^3), ref. 20deg
-
-wavelength=nan(size(depth));
 
 k0init = 2*pi;
 rootOptions = optimset('Display','off');
 
 switch vel_profile
     case 'constant'
-        % Us = sqrt( (1 + B)/B *g*d *tanh(k*d)/(k*d) ) e.g., Dolcetti et al. (2016), eq. (4)
-        fun = @(k,d)  (g*d) *(1 + dens*g/(surf_tens*k^2)) / (dens*g/(surf_tens*k^2))  *tanh(k*d)/(k*d);
-        %              gd           (1 + B)                     B
+        fun = @(k,d)  (g*d)  *tanh(k*d)/(k*d);
 
     case 'linear'
         m = 2*(1-alpha);
         % (1 - 2\beta)*Us^2 = c_i^2 e.g., Dolcetti et al. (2016), eq. (6)
-        fun = @(k,d) (g*d) *(1 + dens*g/(surf_tens*k^2)) / (dens*g/(surf_tens*k^2))   /(1-2*((m/2) *tanh(k.*d) ./ (k.*d)))   *tanh(k*d)/(k*d);
-        %             gd           (1 + B)                     B                             1/(1-2\beta)
+        fun = @(k,d) (g*d) /(1-2*((m/2) *tanh(k.*d) ./ (k.*d)))   *tanh(k*d)/(k*d);
     case 'power'
         % k Us^2 = g ( I_{(0.5-n)s}(k*d) / I_{-(0.5-n)s}(k*d) )  e.g., Dolcetti and Garcìa Nava (2019), Closure, eq. (C5)
         n = (1 - alpha)/alpha;
