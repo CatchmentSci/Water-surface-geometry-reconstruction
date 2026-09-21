@@ -18,13 +18,20 @@ desktop.ini
 ~$*
 .vscode/
 
-# Generated figure products
-code/figures/*/output/
-!code/figures/figure_02/output/
-!code/figures/figure_02/output/Figure2.pdf
+# Locally installed third-party toolbox (version and installation link are documented)
+code/dependencies/chebfun/
 
-# Generated table products
-code/tables/*/output/
+# Generated figure products: retain publication-ready files, ignore diagnostics
+code/figures/*/output/*
+!code/figures/*/output/*.pdf
+!code/figures/*/output/*.png
+!code/figures/figure_11/output/Figure11.csv
+code/figures/*/outputs/
+
+# Generated table products: retain the deposited CSV and LaTeX tables
+code/tables/*/output/*
+!code/tables/*/output/*.csv
+!code/tables/*/output/*.tex
 
 # LaTeX build products
 *.aux

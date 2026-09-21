@@ -72,4 +72,5 @@ outputs = generate_figure_a2( ...
 ```
 
 The generator writes `FigureA2.png` and `FigureA2.pdf` to the
-requested output directory.
+requested output directory. These publication-ready outputs are versioned with
+the repository.

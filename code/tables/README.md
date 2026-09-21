@@ -1,7 +1,8 @@
 # Publication-table provenance
 
 Each publication table has a repository generator and a documented chain back
-to deposited inputs. Generated output directories are ignored by Git.
+to deposited inputs. The canonical CSV and LaTeX outputs are versioned in each
+table's `output` directory and match the corresponding files in the data archive.
 
 | Table | Generator | Immediate inputs | Upstream reproduction |
 |---|---|---|---|

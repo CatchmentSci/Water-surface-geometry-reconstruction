@@ -127,8 +127,9 @@ outputs = generate_figure_05(archiveRoot, ...
     fullfile(repoRoot, 'reproduced', 'figure_05'));
 ```
 
-Generated `output` directories beside figure and table scripts are ignored by
-Git, except for the final Figure 2 schematic. Consult the README in the
+Publication-ready figure files and the canonical CSV/LaTeX table products in
+each workflow's `output` directory are versioned with the repository.
+Intermediate diagnostic files remain ignored. Consult the README in the
 selected workflow directory before running it.
 
 ## Solver and HPC workflows

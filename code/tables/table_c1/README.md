@@ -47,7 +47,7 @@ outputs = generate_table_c1( ...
 ```
 
 If the second argument is omitted, output is written to an `output` directory
-beside the script. Generated output is ignored by Git.
+beside the script. The generated CSV and LaTeX table are versioned with the repository.
 
 The function writes:
 

@@ -66,4 +66,4 @@ outputs = generate_figure_10( ...
 ```
 
 The generator writes `Figure10.png` and `Figure10.pdf` to the requested
-output directory.
+output directory. These publication-ready outputs are versioned with the repository.

@@ -30,4 +30,4 @@ outputs = generate_figure_a1( ...
 ```
 
 The generator writes `FigureA1.png` and `FigureA1.pdf` to the requested
-output directory.
+output directory. These publication-ready outputs are versioned with the repository.

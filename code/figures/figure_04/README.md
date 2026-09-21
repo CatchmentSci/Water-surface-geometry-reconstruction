@@ -40,7 +40,7 @@ outputs = generate_figure_04( ...
 ```
 
 If the second argument is omitted, output is written to an `output` directory
-beside the scripts. Generated output is ignored by Git.
+beside the scripts. The publication-ready PNG and PDF are versioned with the repository.
 
 The function creates `Figure4.png` at 600 dpi and `Figure4.pdf` as vector
 graphics.

@@ -1,0 +1,49 @@
+\begin{table}[htbp]
+\centering
+\begin{tabular}{c c c c c c c c c c c}
+\toprule
+& \multicolumn{3}{c}{Estimated}
+& \multicolumn{4}{c}{Derived velocity}
+& \multicolumn{3}{c}{Derived depth} \\
+\cmidrule(lr){2-4}
+\cmidrule(lr){5-8}
+\cmidrule(lr){9-11}
+Case
+& $U_s$
+& $\lambda_{\mathrm{est}}$
+& $A_{\mathrm{est}}$
+& $U_{\mathrm{deep}}$
+& $U_{\mathrm{constant}}$
+& $U_{\mathrm{linear}}$
+& $U_{\mathrm{power}}$
+& $d_{\mathrm{constant}}$
+& $d_{\mathrm{linear}}$
+& $d_{\mathrm{power}}$ \\
+& {[\(\mathrm{m~s^{-1}}\)]}
+& {[\(\mathrm{m}\)]}
+& {[\(\mathrm{m}\)]}
+& {[\(\mathrm{m~s^{-1}}\)]}
+& {[\(\mathrm{m~s^{-1}}\)]}
+& {[\(\mathrm{m~s^{-1}}\)]}
+& {[\(\mathrm{m~s^{-1}}\)]}
+& {[\(\mathrm{m}\)]}
+& {[\(\mathrm{m}\)]}
+& {[\(\mathrm{m}\)]} \\
+\midrule
+R$_{1}$ & 2.360 & 4.399 & 0.098 & 2.621 & 2.618 & 2.736 & 2.699 & 0.788 & 2.288 & 2.585 \\
+R$_{2}$ & 2.785 & 4.823 & 0.105 & 2.744 & 2.739 & 2.877 & 2.837 & 1.210 & 0.875 & 2.939 \\
+R$_{3}$ & 2.261 & 3.814 & 0.062 & 2.440 & 2.439 & 2.538 & 2.506 & 0.559 & 0.588 & -- \\
+R$_{4}$ & 2.410 & 3.191 & 0.070 & 2.232 & 2.232 & 2.306 & 2.280 & 0.503 & 2.693 & 1.830 \\
+R$_{5}$ & 2.186 & 4.258 & 0.088 & 2.578 & 2.575 & 2.698 & 2.661 & 0.595 & -- & -- \\
+R$_{6}$ & 2.124 & 3.113 & 0.099 & 2.205 & 2.204 & 2.301 & 2.268 & 0.575 & 1.330 & 2.212 \\
+R$_{7}$ & 1.960 & 3.100 & 0.059 & 2.200 & 2.197 & 2.298 & 2.267 & 0.577 & 0.482 & -- \\
+R$_{8}$ & 1.740 & 3.032 & 0.054 & 2.176 & 2.173 & 2.275 & 2.244 & 0.376 & 3.516 & 2.259 \\
+R$_{9}$ & 1.550 & 2.005 & 0.037 & 1.769 & 1.769 & 1.817 & 1.800 & 0.317 & 1.547 & 1.046 \\
+R$_{10}$ & 1.279 & 1.730 & 0.039 & 1.644 & 1.644 & 1.685 & 1.669 & 0.189 & 1.321 & 0.861 \\
+R$_{11}$ & 1.075 & 1.167 & 0.025 & 1.350 & 1.350 & 1.377 & 1.367 & 0.140 & -- & -- \\
+\bottomrule
+\end{tabular}
+\bigskip
+\caption{Wave-parameter estimates for the real-world cases, ordered by decreasing discharge; see Table~\ref{Table:real_char} for hydraulic descriptors. $U_s$ is the case median of the transect-scale streamwise surface velocities obtained using KLT-IV, calculated over the same valid transects used for the wavelength-derived velocity estimates. $\lambda_{\mathrm{est}}$ is the median autocorrelation wavelength estimate returned for the accepted WSG map. $A_{\mathrm{est}}$ is the median robust amplitude estimate, calculated for each detrended transect as half the difference between its 98\textsuperscript{th} and 2\textsuperscript{nd} percentiles. The derived velocities use the deep-water approximation (Equation~\ref{eq:3b}), constant profile (Equation~\ref{eq:wavea}), linear profile (Equation~\ref{eq:waveb}), and power profile (Equation~\ref{eq:wavec}). Depth inversion uses the tracked streamwise velocity projected onto the initial planar water surface. Derived depths use the deep solution branch, or the single solution where only one admissible root exists. R$_{12}$ and R$_{13}$ are omitted because the selector did not identify stable wavelength reconstructions.}
+\label{Table:real_res}
+\end{table}

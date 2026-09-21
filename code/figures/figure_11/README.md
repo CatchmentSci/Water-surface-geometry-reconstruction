@@ -71,7 +71,8 @@ outputs = generate_figure_11( ...
 ```
 
 If the second argument is omitted, output is written to an `output` directory
-beside the script. Generated output is ignored by Git.
+beside the script. The publication-ready PNG, PDF and plotted CSV are versioned
+with the repository.
 
 Optional name-value arguments override the curves drawn:
 

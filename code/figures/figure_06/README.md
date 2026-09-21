@@ -46,7 +46,7 @@ outputs = generate_figure_06( ...
 ```
 
 If the second argument is omitted, output is written to an `output` directory
-beside the scripts. Generated output is ignored by Git.
+beside the scripts. The publication-ready PNG and PDF are versioned with the repository.
 
 The function creates `Figure6.png` at 600 dpi and `Figure6.pdf` as vector
 graphics. The returned structure records the selected checkpoint files,

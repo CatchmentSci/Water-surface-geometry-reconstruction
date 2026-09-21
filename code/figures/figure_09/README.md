@@ -54,7 +54,7 @@ outputs = generate_figure_09( ...
 ```
 
 If the second argument is omitted, output is written to an `output` directory
-beside the script. Generated output is ignored by Git.
+beside the script. The publication-ready PNG and PDF are versioned with the repository.
 
 The plotting function creates `Figure9.png` at 600 dpi and `Figure9.pdf` as
 vector graphics.

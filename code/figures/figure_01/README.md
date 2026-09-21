@@ -34,7 +34,8 @@ outputs = generate_figure_01( ...
 ```
 
 If the second argument is omitted, output is written to an `output` directory
-beside the script. Generated output is ignored by Git.
+beside the script. The publication-ready PNG is versioned with the repository;
+the diagnostic MAT file remains local.
 
 The function creates:
 
