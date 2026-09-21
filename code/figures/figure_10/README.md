@@ -9,6 +9,12 @@ calibration and applied to the remaining eight cases. The plotted case
 estimate is the median of the resulting held-out transect predictions, and
 the vertical error range is their interquartile range.
 
+Individual held-out depth predictions greater than `10 m` are treated as
+inadmissible and set to missing before the case medians, interquartile ranges,
+and aggregate error statistics are calculated. This upper bound prevents
+numerically unstable inversions from dominating the cross-validation
+summaries; predictions at or below `10 m` are retained.
+
 Finite transect wavelengths in `0.5 <= lambda <= 7 m` are first retained and
 required to have an autocorrelation peak of at least 0.10. Values more than 3.5
 scaled median absolute deviations from the resulting case median are then
