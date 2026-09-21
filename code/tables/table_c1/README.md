@@ -5,6 +5,11 @@ cases R1-R11. It combines accepted autocorrelation wave estimates with
 derived velocities and the KLT-IV-based inverse-depth summary used for Figures
 8 and 9.
 
+The estimated group reports the case median KLT-IV streamwise surface
+velocity, `U_s`, together with the accepted-map wavelength and amplitude.
+`U_s` uses the same valid transects paired with the deep-water velocity
+estimate in Figure 8.
+
 ## Required inputs
 
 The accepted-map amplitude summary is read from the extracted Zenodo archive:
