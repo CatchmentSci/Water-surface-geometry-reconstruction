@@ -290,9 +290,11 @@ R2 = 1 - SSRes/SSTot;
 
 % root-mean-squared error
 RMS = sqrt(mean((dEstCvMean - depthMean).^2));
+RMSRelative =   sqrt(mean((dEstCvMean - depthMean).^2./depthMean.^2));
 
 fprintf('\nr2 depth estimation (median): %.2f',R2)
 fprintf('\nrms depth estimation (median): %.2f',RMS)
+fprintf('\nrms relative depth estimation (median): %.2f',RMSRelative)
 
 LocalIR = mean(dEstCvMax-dEstCvMin)/2;
 LocalIRRelative = mean((dEstCvMax-dEstCvMin)./dEstCvMean)/2;
