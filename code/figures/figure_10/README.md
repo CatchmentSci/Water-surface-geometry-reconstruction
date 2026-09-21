@@ -3,10 +3,16 @@
 `generate_figure_10.m` reproduces Figure 10, comparing observed water depth
 with estimation based on SWA and SWW according to an empirical relationship.
 
-The figure shows observed depth versus estimated depth. The empirical
-amplitude--\(kh\) relationship is calibrated from cases with
-\(Q>20\ \mathrm{m^3\,s^{-1}}\); the comparison therefore describes
-in-sample reconstruction rather than independent validation.
+The figure shows observed depth versus estimated depth. Robustness is assessed
+by exhaustive cross-validation: every combination of three cases is used for
+calibration and applied to the remaining eight cases. The plotted case
+estimate is the median of the resulting held-out transect predictions, and
+the vertical error range is their interquartile range.
+
+Transect wavelengths are first restricted to the admissible range
+`1 <= lambda <= 7 m` and required to have an autocorrelation peak of at least
+0.10. Values more than 3.5 scaled median absolute deviations from the resulting
+case median are then rejected when at least eight finite estimates remain.
 
 The plotted depth estimate does not depend on velocity. Ancillary velocity
 and Froude-number diagnostics returned by the script use KLT-IV surface

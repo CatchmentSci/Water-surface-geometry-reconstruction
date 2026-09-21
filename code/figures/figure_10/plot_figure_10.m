@@ -38,7 +38,6 @@ alpha = 0.85;
 ks = 0.05;
 lambdaMinThreshold = 1;
 lambdaMaxThreshold = 7;
-QThresholdAmpl = 20;
 
 org = [255,127,0] / 255;
 cmap = local_coolwarm(256);
@@ -189,11 +188,9 @@ for id = 1:nCases
     FrMax(id) = prctile(csFr{id}, 75);
 
     % Wavelength
-    lambda = ds.autocorrWavelength_m;
-    peakR = ds.autocorrPeakR;
-    lambda = accepted_autocorr_wavelengths(lambda, peakR);
-    lambda(lambda > lambdaMaxThreshold) = NaN;
-    lambda(lambda < lambdaMinThreshold) = NaN;
+    lambda = accepted_autocorr_wavelengths( ...
+        ds.autocorrWavelength_m, ds.autocorrPeakR, ...
+        lambdaMinThreshold, lambdaMaxThreshold);
 
     csLambda{id} = lambda;
 
@@ -223,9 +220,8 @@ end
 
 %% Fit amplitude-depth relationship using all data
 
-% idx = find(Q > QThresholdAmpl);
-% 
-[pfitAllData, SAllData] = polyfit( ...
+idx = 1:nCases;
+[pfitAllData, ~] = polyfit( ...
     log(kdMean(idx)), ...
     log(amplMean(idx)), ...
     1);
@@ -241,13 +237,12 @@ dEstCvMean = nan(nCases,1);
 dEstCvMin = nan(nCases,1);
 dEstCvMax = nan(nCases,1);
 
-idx = 1:nCases;
 n_points = 3; % number of points used for a single calibration
 C = nchoosek(idx,n_points); % create combinations of 3 points
 n = size(C,1);
 
 c1 = nan(n,1);
-c2 = nan(n,2);
+c2 = nan(n,1);
 
 for i=1:size(C,1)
     idx_train = C(i,:);                 % training set
@@ -413,11 +408,11 @@ outputs.amplitudeFitCv = [c1'; c2'];
 outputs.R2 = R2;
 outputs.rmsError = RMS;
 
-output.LocalIR = LocalIR;
-output.LocalIRRelative = LocalIRRelative;
+outputs.LocalIR = LocalIR;
+outputs.LocalIRRelative = LocalIRRelative;
 
-output.LocalErrMedian = LocalErrMedian;
-output.LocalErrRelativeMedian = LocalErrRelativeMedian;
+outputs.LocalErrMedian = LocalErrMedian;
+outputs.LocalErrRelativeMedian = LocalErrRelativeMedian;
 
 outputs.figure10 = opts.outFigureFile;
 
@@ -426,35 +421,6 @@ end
 
 
 %% Local functions
-
-function lambda = accepted_autocorr_wavelengths(lambda, peakR)
-
-lambda = double(lambda(:));
-
-peakR = double(peakR(:));
-
-lambda(~isfinite(lambda) | lambda <= 0 | ...
-    ~isfinite(peakR) | peakR < 0.10) = NaN;
-
-idx = find(isfinite(lambda));
-
-if numel(idx) >= 8
-
-    values = lambda(idx);
-
-    centre = median(values, 'omitnan');
-
-    scaledMad = 1.4826 .* median(abs(values-centre), 'omitnan');
-
-    if isfinite(scaledMad) && scaledMad > 0
-
-        lambda(idx(abs(values-centre) > 3.5.*scaledMad)) = NaN;
-
-    end
-
-end
-
-end
 
 function add_panel_label(ax, label, fontSize)
 
@@ -478,4 +444,23 @@ anchors = [59 76 192; 84 112 222; 129 164 251; 180 205 251; ...
 map = interp1(linspace(0, 1, size(anchors, 1)), anchors, ...
     linspace(0, 1, m), "linear");
 map = max(0, min(1, map));
+end
+
+
+function lambda = accepted_autocorr_wavelengths( ...
+        lambda, peakR, lambdaMin, lambdaMax)
+% Apply the canonical field-case wavelength quality and outlier filters.
+lambda = double(lambda(:));
+peakR = double(peakR(:));
+lambda(~isfinite(lambda) | ~isfinite(peakR) | peakR < 0.10 | ...
+    lambda < lambdaMin | lambda > lambdaMax) = NaN;
+idx = find(isfinite(lambda));
+if numel(idx) >= 8
+    values = lambda(idx);
+    centre = median(values, 'omitnan');
+    scaledMad = 1.4826 .* median(abs(values-centre), 'omitnan');
+    if isfinite(scaledMad) && scaledMad > 0
+        lambda(idx(abs(values-centre) > 3.5.*scaledMad)) = NaN;
+    end
+end
 end
