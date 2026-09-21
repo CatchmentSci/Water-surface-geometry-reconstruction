@@ -219,83 +219,79 @@ for id = 1:nCases
 
 end
 
-%% Fit amplitude-depth relationship
+%% Fit amplitude-depth relationship using all data
 
-idx = find(Q > QThresholdAmpl);
-
-[pfit, S] = polyfit( ...
+% idx = find(Q > QThresholdAmpl);
+% 
+[pfitAllData, SAllData] = polyfit( ...
     log(kdMean(idx)), ...
     log(amplMean(idx)), ...
     1);
 
-%% Estimate depth from observed amplitude and wavelength
 
-dEst = cell(nCases, 1);
+%% cross-validation approach using 3 points at a time
 
-dEstMean = nan(nCases, 1);
-dEstMin = nan(nCases, 1);
-dEstMax = nan(nCases, 1);
+dEstCv = cell(nCases,1);
+dEstCvMean = nan(nCases,1);
+dEstCvMin = nan(nCases,1);
+dEstCvMax = nan(nCases,1);
 
-for id = 1:nCases
+idx = 1:nCases;
+n_points = 3; % number of points used for a single calibration
+C = nchoosek(idx,n_points); % create combinations of 3 points
+n = size(C,1);
 
-    dEst{id} = ...
-        (csAmpl{id} / exp(pfit(2))).^(1 / pfit(1)) ...
-        .* csLambda{id} / (2 * pi);
+c1 = nan(n,1);
+c2 = nan(n,2);
 
-    dEstMean(id) = nanmedian(dEst{id});
-    dEstMin(id) = prctile(dEst{id}, 25);
-    dEstMax(id) = prctile(dEst{id}, 75);
+for i=1:size(C,1)
+    idx_train = C(i,:);                 % training set
+    idx_test = setdiff(idx,idx_train);  % testing set
+
+    % fit for a 3 cases combination
+    pfit = polyfit(log(kdMean(idx_train)),log(amplMean(idx_train)),1);
+
+    c1(i) = exp(pfit(2));   % coeff 1
+    c2(i) = pfit(1);        % coeff 2
+
+    for ii=idx_test
+    % invert to estimate depth of testing set
+        dEstCv{ii} = [dEstCv{ii} ; (csAmpl{ii}/c1(i)) .^(1/c2(i)) .* csLambda{ii} / (2*pi)];
+    end
 
 end
 
-%% Confidence intervals of fitted coefficients
+% calculate statitics of reconstructions
+for i = 1:nCases
+dEstCvMean(i) = nanmedian(dEstCv{i},1);
+dEstCvMin(i) = prctile(dEstCv{i},25);
+dEstCvMax(i) = prctile(dEstCv{i},75);
+end
 
-[yfit, delta] = polyval( ...
-    pfit, log(kdMean(idx)), S); %#ok<ASGLU>
+% statistics of fitted parameters
+c1Mean = nanmedian(c1);
+c1Min = prctile(c1,25);
+c1Max = prctile(c1,75);
 
-sigma2 = S.normr^2 / S.df;
+c2Mean = nanmedian(c2);
+c2Min = prctile(c2,25);
+c2Max = prctile(c2,75);
 
-covb = sigma2 * inv(S.R)' * inv(S.R);
-se = sqrt(diag(covb));
+% coefficient of determination
+SSRes = sum((dEstCvMean - depthMean).^2);
+SSTot = sum((dEstCvMean - mean(dEstCvMean)).^2);
+R2 = 1 - SSRes/SSTot;
 
-tcrit = tinv(0.975, S.df);
+% root-mean-squared error
+RMS = sqrt(mean((dEstCvMean - depthMean).^2));
 
-CI_beta0 = pfit(2) + [-1 1] * tcrit * se(2);
-CI_beta1 = pfit(1) + [-1 1] * tcrit * se(1);
+fprintf('\nr2 depth estimation : %.2f',R2)
+fprintf('\nrms depth estimation : %.2f',RMS)
 
-c1 = exp(pfit(2));
-c2 = pfit(1);
+fprintf('\n average uncertainty: %.2f',mean(dEstCvMax-dEstCvMin)/2)
+fprintf('\n average relative uncertainty: %.2f',mean((dEstCvMax-dEstCvMin)./dEstCvMean)/2)
+fprintf('\n average measurement uncertainty: %.2f',mean(depthMax-depthMin)/2)
 
-c1_CI = exp(CI_beta0);
-c2_CI = CI_beta1;
-
-%% Theoretical relationships and diagnostics
-
-lambdaExpected = 2 * pi * velMean.^2 / g;
-
-lambdaError = median( ...
-    lambdaMean - lambdaExpected, 'omitnan');
-
-fprintf('\nMedian lambda error = %.2f\n', lambdaError);
-
-kd = linspace(0, 100, 500);
-
-A = 8 * pi * ks * sinh(kd) ./ ...
-    (sinh(2 * kd) - 2 * kd);
-
-Afit = exp(pfit(2)) * kd.^pfit(1);
-
-AExpected = exp(pfit(2)) * kdMean.^pfit(1);
-AObserved = amplMean;
-
-fprintf('fitted relationship SWA = %.2f (kh)^ %.2f\n', exp(pfit(2)), pfit(1));
-
-SSRes = sum((AObserved - AExpected).^2, 'omitnan');
-SSTot = sum((AObserved - mean(AObserved, 'omitnan')).^2, 'omitnan');
-
-R2 = 1 - SSRes / SSTot;
-
-fprintf('R2 amplitude fitting = %.2f\n', R2);
 
 %% Figure 10: observed vs estimated depth
 
@@ -316,9 +312,9 @@ plot(ax, [1 3], [1 3], '--', ...
 for id = 1:nCases
 
     errorbar(ax, ...
-        depthMean(id), dEstMean(id), ...
-        dEstMean(id) - dEstMin(id), ...
-        dEstMax(id) - dEstMean(id), ...
+        depthMean(id), dEstCvMean(id), ...
+        dEstCvMean(id) - dEstCvMin(id), ...
+        dEstCvMax(id) - dEstCvMean(id), ...
         depthMean(id) - depthMin(id), ...
         depthMax(id) - depthMean(id), ...
         'o', ...
@@ -382,21 +378,21 @@ outputs.wavelength = csLambda;
 outputs.amplitude = csAmpl;
 outputs.kh = csKd;
 
-outputs.depthEstimated = dEst;
+outputs.depthEstimated = dEstCv;
 
 outputs.depthMean = depthMean;
-outputs.depthEstimatedMean = dEstMean;
+outputs.depthEstimatedMean = dEstCvMean;
 outputs.velocityMean = velMean;
 outputs.froudeMean = FrMean;
 outputs.wavelengthMean = lambdaMean;
 outputs.amplitudeMean = amplMean;
 outputs.khMean = kdMean;
 
-outputs.amplitudeFit = pfit;
-outputs.amplitudeFitCI = [CI_beta0; CI_beta1];
+outputs.amplitudeFit = pfitAllData;
+outputs.amplitudeFitCv = [c1'; c2'];
 
 outputs.R2 = R2;
-outputs.medianWavelengthError = lambdaError;
+outputs.rmsError = RMS;
 
 outputs.figure10 = opts.outFigureFile;
 
