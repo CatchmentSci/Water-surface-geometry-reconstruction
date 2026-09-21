@@ -56,9 +56,20 @@ the maximum offset to the nearest supporting flow record; adjacent records
 can span 15 minutes.
 
 The deposited hydraulic-statistics CSV is the direct input to this table.
-Regenerating that CSV from its original time series additionally requires the
-stage/discharge workbook and long-term flow record, which are not included in
-the current Zenodo staging archive.
+It is itself reproducible from the deposited source data using:
+
+```matlab
+addpath(fullfile(repoRoot, 'code', 'data', 'videos'))
+hydraulic = reproduce_hydraulic_statistics(archiveRoot, rebuiltRoot);
+report = validate_hydraulic_statistics(archiveRoot, rebuiltRoot);
+```
+
+The source chain is
+`videos/inputs/hydraulics/video_observation_inventory.csv` -> exact or
+linearly interpolated records in `Austins_SG_Q.xlsx` -> section geometry from
+`videos/inputs/cross_section.csv`. Empirical exceedance is calculated from all
+deposited values in `long_term_discharge_values.csv`. The validator compares
+all 28 columns of the rebuilt and deposited hydraulic tables.
 
 ## Software
 

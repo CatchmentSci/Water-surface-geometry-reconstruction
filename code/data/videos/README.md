@@ -88,3 +88,20 @@ and
 The completed workflow was tested by rebuilding all 15 canonical CSV files
 from the deposited checkpoints and inputs. The strict validator found no
 differences across 559 table rows.
+
+## Hydraulic statistics used by Table 3
+
+`reproduce_hydraulic_statistics.m` rebuilds
+`videos/inputs/Dart_video_hydraulic_statistics.csv` from the deposited video
+observation inventory, stage/discharge workbook, long-term discharge values
+and cross-section survey. It preserves the original interpolation, section
+geometry, flow-duration, Froude and Reynolds calculations while replacing the
+dependency on local video-directory names with an explicit inventory.
+
+```matlab
+outputs = reproduce_hydraulic_statistics(archiveRoot, rebuiltRoot);
+report = validate_hydraulic_statistics(archiveRoot, rebuiltRoot);
+```
+
+The verified rebuild is identical to the deposited reference in all 18 rows
+and 28 columns.

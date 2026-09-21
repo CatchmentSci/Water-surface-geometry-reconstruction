@@ -16,6 +16,11 @@ workflow. Cases are assigned sequential labels S1-S39 in deposited row order,
 rather than relying on legacy labels retained in the source summary.
 The archive's `h_m` field is reported as hydraulic depth, `D`, in Table B1.
 
+The summary is reproducible directly from the 39 deposited checkpoints using
+`code/data/syn/reproduce_synthetic_summary.m`. Its companion validator checks
+every field consumed by Figure 5 and Table B1. PMUSIC is disabled and is not
+used in this calculation chain.
+
 ## Run
 
 In MATLAB, from any working directory:
@@ -51,6 +56,14 @@ Large finite differences for S30 and S35 are retained because they are genuine
 accepted-summary results.
 
 The LaTeX output requires the `booktabs`, `adjustbox`, and `caption` packages.
+
+For an end-to-end rebuild, run and validate the synthetic summary first:
+
+```matlab
+addpath(fullfile(repoRoot, 'code', 'data', 'syn'))
+summary = reproduce_synthetic_summary(archiveRoot, rebuiltRoot);
+report = validate_synthetic_summary(archiveRoot, rebuiltRoot);
+```
 
 ## Software
 
