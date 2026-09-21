@@ -231,6 +231,9 @@ end
 
 %% cross-validation approach using 3 points at a time
 
+LocalErr = []; %cell(nCases,1);
+LocalErrRelative = [];
+
 dEstCv = cell(nCases,1);
 dEstCvMean = nan(nCases,1);
 dEstCvMin = nan(nCases,1);
@@ -256,7 +259,10 @@ for i=1:size(C,1)
 
     for ii=idx_test
     % invert to estimate depth of testing set
-        dEstCv{ii} = [dEstCv{ii} ; (csAmpl{ii}/c1(i)) .^(1/c2(i)) .* csLambda{ii} / (2*pi)];
+        pfitInv = (csAmpl{ii}/c1(i)) .^(1/c2(i)) .* csLambda{ii} / (2*pi);
+        dEstCv{ii} = [dEstCv{ii} ; pfitInv];
+        LocalErr = [LocalErr; pfitInv - csDepth{ii}];
+        LocalErrRelative = [LocalErrRelative; (pfitInv - csDepth{ii})./csDepth{ii}];
     end
 
 end
@@ -285,12 +291,20 @@ R2 = 1 - SSRes/SSTot;
 % root-mean-squared error
 RMS = sqrt(mean((dEstCvMean - depthMean).^2));
 
-fprintf('\nr2 depth estimation : %.2f',R2)
-fprintf('\nrms depth estimation : %.2f',RMS)
+fprintf('\nr2 depth estimation (median): %.2f',R2)
+fprintf('\nrms depth estimation (median): %.2f',RMS)
 
-fprintf('\n average uncertainty: %.2f',mean(dEstCvMax-dEstCvMin)/2)
-fprintf('\n average relative uncertainty: %.2f',mean((dEstCvMax-dEstCvMin)./dEstCvMean)/2)
+LocalIR = mean(dEstCvMax-dEstCvMin)/2;
+LocalIRRelative = mean((dEstCvMax-dEstCvMin)./dEstCvMean)/2;
+
+fprintf('\n average interquartile range for local depth reconstruction: %.2f',LocalIR)
+fprintf('\n average relative interquartile range for local depth reconstruction: %.2f',LocalIRRelative)
 fprintf('\n average measurement uncertainty: %.2f',mean(depthMax-depthMin)/2)
+
+LocalErrMedian = nanmedian(abs(LocalErr));
+LocalErrRelativeMedian = nanmedian(abs(LocalErrRelative));
+fprintf('\n median absolute error of local depth reconstruction: %.2f',LocalErrMedian)
+fprintf('\n median relative error of local depth reconstruction: %.2f',LocalErrRelativeMedian)
 
 
 %% Figure 10: observed vs estimated depth
@@ -394,7 +408,14 @@ outputs.amplitudeFitCv = [c1'; c2'];
 outputs.R2 = R2;
 outputs.rmsError = RMS;
 
+output.LocalIR = LocalIR;
+output.LocalIRRelative = LocalIRRelative;
+
+output.LocalErrMedian = LocalErrMedian;
+output.LocalErrRelativeMedian = LocalErrRelativeMedian;
+
 outputs.figure10 = opts.outFigureFile;
+
 
 end
 
