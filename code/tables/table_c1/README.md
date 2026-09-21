@@ -29,6 +29,11 @@ transect, it uses the largest admissible root where multiple roots exist and
 the sole admissible root otherwise; a case median can therefore combine
 deep-branch and unique-root estimates.
 
+The generator verifies that the MAT-file records the shared real-case filter:
+finite wavelengths in `0.5 <= lambda <= 7 m` and `autocorrPeakR >= 0.10`
+precede rejection beyond 3.5 scaled MADs from the resulting case median, with
+MAD rejection applied when at least eight estimates remain.
+
 ## Run
 
 In MATLAB, from any working directory:

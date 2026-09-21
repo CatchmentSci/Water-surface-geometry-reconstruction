@@ -36,7 +36,7 @@ end
 g = 9.81;
 alpha = 0.85;
 ks = 0.05;
-lambdaMinThreshold = 1;
+lambdaMinThreshold = 0.5;
 lambdaMaxThreshold = 7;
 QThresholdAmpl = 20;
 
@@ -179,9 +179,9 @@ for id = 1:nCases
     FrMax(id) = prctile(csFr{id}, 75);
 
     % Wavelength
-    lambda = ds.autocorrWavelength_m;
-    lambda(lambda > lambdaMaxThreshold) = NaN;
-    lambda(lambda < lambdaMinThreshold) = NaN;
+    lambda = accepted_autocorr_wavelengths( ...
+        ds.autocorrWavelength_m, ds.autocorrPeakR, ...
+        lambdaMinThreshold, lambdaMaxThreshold);
 
     csLambda{id} = lambda;
 
@@ -577,4 +577,23 @@ anchors = [59 76 192; 84 112 222; 129 164 251; 180 205 251; ...
 map = interp1(linspace(0, 1, size(anchors, 1)), anchors, ...
     linspace(0, 1, m), "linear");
 map = max(0, min(1, map));
+end
+
+
+function lambda = accepted_autocorr_wavelengths( ...
+        lambda, peakR, lambdaMin, lambdaMax)
+% Apply the canonical field-case wavelength quality and outlier filters.
+lambda = double(lambda(:));
+peakR = double(peakR(:));
+lambda(~isfinite(lambda) | lambda < lambdaMin | lambda > lambdaMax) = NaN;
+lambda(~isfinite(peakR) | peakR < 0.10) = NaN;
+idx = find(isfinite(lambda));
+if numel(idx) >= 8
+    values = lambda(idx);
+    centre = median(values, 'omitnan');
+    scaledMad = 1.4826 .* median(abs(values-centre), 'omitnan');
+    if isfinite(scaledMad) && scaledMad > 0
+        lambda(idx(abs(values-centre) > 3.5.*scaledMad)) = NaN;
+    end
+end
 end

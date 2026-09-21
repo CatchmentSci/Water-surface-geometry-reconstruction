@@ -41,6 +41,12 @@ scripts. The Figure 9 workflow also includes a reproducible root-bracketing
 step and a per-transect audit table that distinguishes unique-root from
 multiple-root inversions.
 
+Real-case autocorrelation wavelengths used by Figures 7--11 and Table C1 use
+one acceptance sequence: retain finite values in `0.5 <= lambda <= 7 m`,
+require `autocorrPeakR >= 0.10`, then reject values beyond 3.5 scaled MADs from
+the resulting case median when at least eight estimates remain. Synthetic and
+theoretical workflows retain their experiment-specific wavelength domains.
+
 The canonical real-video CSV products can be recalculated directly from the
 deposited checkpoints and inputs with
 `code/data/videos/reproduce_video_derived_csvs.m`. The companion validator

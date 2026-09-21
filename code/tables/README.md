@@ -23,4 +23,7 @@ difference is calculated using `U_s = sqrt(g*lambda/(2*pi))`.
 Table C1 combines accepted autocorrelation wavelength and robust WSG amplitude
 with the velocity and explicitly selected depth-root summaries. Its component
 builders retain transect-level audit products so each case median can be traced
-to the contributing values.
+to the contributing values. Its real-case wavelengths inherit the shared
+sequence used by Figures 7--11: retain finite values in
+`0.5 <= lambda <= 7 m`, require `autocorrPeakR >= 0.10`, then apply the 3.5
+scaled-MAD criterion when at least eight estimates remain.

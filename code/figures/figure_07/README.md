@@ -6,6 +6,12 @@ wave amplitude, and flow depth.
 
 Surface velocity is obtained using KLT-IV.
 
+Transect wavelengths use the shared real-case acceptance rule. Finite values
+in `0.5 <= lambda <= 7 m` are first retained and required to have an
+autocorrelation peak of at least 0.10. Values more than 3.5 scaled median
+absolute deviations from the resulting case median are then rejected when at
+least eight estimates remain.
+
 The figure panels show:
 
 - **(a)** observed wavelength versus surface velocity;

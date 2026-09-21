@@ -34,6 +34,11 @@ number and value of admissible roots for every case, transect, and velocity
 profile. Roots are bracketed on a 0.01 m grid within 0.05--5.00 m; only
 subcritical roots are retained. Rebuilding the summary does not rerun the KLT
 solver, checkpoint selection, or wavelength estimation.
+The rebuild verifies that the Figure 8 data used the shared real-case filter:
+finite wavelengths in `0.5 <= lambda <= 7 m` and
+`autocorrPeakR >= 0.10` are applied before rejection beyond 3.5 scaled MADs
+from the resulting case median (for cases with at least eight remaining
+estimates).
 
 ## Run
 

@@ -45,7 +45,7 @@ The KLT-IV velocity-validation summary is bundled with Figure 8:
 
 SHA-256:
 
-`95A58E56DFF92C685E44E55380762AF2D4A246FE0262C64F0EEE493D05D83457`
+`38741FB1063E94873C223F92343BC9D9C6E4B97ACA183FCA8DF69C5EA0D29385`
 
 Only `lambdaEst_m` is taken from Table C1; the velocity-derived depth values
 come from the bundled Figure 9 summary.
@@ -53,6 +53,10 @@ come from the bundled Figure 9 summary.
 This is a compact post-processing product: reproducing the figure does not
 rerun the KLT solver, checkpoint selection, wavelength estimation, or
 inverse-depth calculations.
+The generator verifies that the upstream Figure 8 data record the shared
+real-case filter: finite wavelengths in `0.5 <= lambda <= 7 m` and
+`autocorrPeakR >= 0.10` are applied before rejection beyond 3.5 scaled MADs
+from the resulting case median (when at least eight estimates remain).
 
 ## Run
 

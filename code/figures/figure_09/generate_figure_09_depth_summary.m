@@ -22,13 +22,14 @@ if ~isfolder(outputFolder)
     mkdir(outputFolder);
 end
 
-source = load(sourceFile, "autocorrCaseTransectTables");
+source = load(sourceFile, "autocorrCaseTransectTables", "wavelengthFilter");
 if ~isfield(source, "autocorrCaseTransectTables") || ...
         ~iscell(source.autocorrCaseTransectTables) || ...
         numel(source.autocorrCaseTransectTables) ~= 13
     error("Figure09Depth:InvalidInput", ...
         "Expected 13 ordered R1--R13 transect tables.");
 end
+validate_wavelength_filter(source);
 
 cfg = inversion_config();
 methods = ["uniform", "linear", "power"];
@@ -249,4 +250,24 @@ row.(prefix + "_yQ25") = yQ25;
 row.(prefix + "_yQ75") = yQ75;
 row.(prefix + "_yErrLow") = yMedian-yQ25;
 row.(prefix + "_yErrHigh") = yQ75-yMedian;
+end
+
+function validate_wavelength_filter(source)
+if ~isfield(source, "wavelengthFilter")
+    error("Figure09Depth:MissingFilterProvenance", ...
+        "Figure 8 data do not record the real-case wavelength filter.");
+end
+filter = source.wavelengthFilter;
+required = ["minWavelength_m", "maxWavelength_m", ...
+    "minAutocorrPeakR", "madScaleFactor", ...
+    "scaledMadMultiplier", "minProfilesForMad"];
+if ~isstruct(filter) || any(~isfield(filter, cellstr(required))) || ...
+        filter.minWavelength_m ~= 0.5 || filter.maxWavelength_m ~= 7 || ...
+        filter.minAutocorrPeakR ~= 0.10 || ...
+        filter.madScaleFactor ~= 1.4826 || ...
+        filter.scaledMadMultiplier ~= 3.5 || ...
+        filter.minProfilesForMad ~= 8
+    error("Figure09Depth:UnexpectedWavelengthFilter", ...
+        "Figure 8 data do not use the agreed real-case wavelength filter.");
+end
 end

@@ -36,7 +36,7 @@ end
 g = 9.81;
 alpha = 0.85;
 ks = 0.05;
-lambdaMinThreshold = 1;
+lambdaMinThreshold = 0.5;
 lambdaMaxThreshold = 7;
 
 org = [255,127,0] / 255;
@@ -452,8 +452,8 @@ function lambda = accepted_autocorr_wavelengths( ...
 % Apply the canonical field-case wavelength quality and outlier filters.
 lambda = double(lambda(:));
 peakR = double(peakR(:));
-lambda(~isfinite(lambda) | ~isfinite(peakR) | peakR < 0.10 | ...
-    lambda < lambdaMin | lambda > lambdaMax) = NaN;
+lambda(~isfinite(lambda) | lambda < lambdaMin | lambda > lambdaMax) = NaN;
+lambda(~isfinite(peakR) | peakR < 0.10) = NaN;
 idx = find(isfinite(lambda));
 if numel(idx) >= 8
     values = lambda(idx);

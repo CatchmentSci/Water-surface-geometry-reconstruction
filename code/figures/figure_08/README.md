@@ -39,6 +39,12 @@ end-to-end calculation chain from the solver products to Figure 8.
 `build_figure_08_summary.m` retains the velocity equations, autocorrelation
 quality filter, common-valid-transect mask, and median/IQR aggregation used by
 the original `batch_first10m_velocity_validation_and_sensitivity.m` analysis.
+For each real case, finite wavelengths in `0.5 <= lambda <= 7 m` are first
+retained and required to have `autocorrPeakR >= 0.10`. The case median and
+scaled MAD are then calculated from the remaining values, and values farther
+than 3.5 scaled MADs are rejected when at least eight estimates remain. The
+filter settings are stored in the rebuilt MAT-file as
+`wavelengthFilter` so downstream analyses can validate their provenance.
 
 ## Run
 
