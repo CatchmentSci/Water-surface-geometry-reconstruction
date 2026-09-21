@@ -26,6 +26,20 @@ The MAT-file contains the final 13-case validation and sensitivity tables,
 per-transect KLT-IV surface velocities, and the inclusion mask. Reproducing
 Figure 8 does not rerun the KLT solver or wavelength analysis.
 
+The bundled MAT-file is itself reproducible from the canonical deposited
+CSVs. Run `build_figure_08_summary.m` with the extracted archive root and an
+output folder. It reads:
+
+- `videos/inputs/per_transect_initial_accepted.csv`; and
+- the 13 selected-profile CSVs in `videos/derived/profiles`.
+
+Those CSVs can in turn be rebuilt from the deposited checkpoints and inputs
+using `code/data/videos/reproduce_video_derived_csvs.m`, providing an
+end-to-end calculation chain from the solver products to Figure 8.
+`build_figure_08_summary.m` retains the velocity equations, autocorrelation
+quality filter, common-valid-transect mask, and median/IQR aggregation used by
+the original `batch_first10m_velocity_validation_and_sensitivity.m` analysis.
+
 ## Run
 
 In MATLAB, from any working directory:
@@ -36,6 +50,13 @@ addpath(fullfile(repoRoot, 'code', 'figures', 'figure_08'))
 outputs = generate_figure_08( ...
     '', ... % retained archive argument; bundled data take precedence
     'C:\path\to\figure_08_output');
+```
+
+To rebuild the compact input first:
+
+```matlab
+rebuilt = build_figure_08_summary(archiveRoot, ...
+    fullfile(repoRoot, 'reproduced', 'figure_08_data'));
 ```
 
 If the second argument is omitted, output is written to an `output` directory

@@ -41,6 +41,11 @@ scripts. The Figure 9 workflow also includes a reproducible root-bracketing
 step and a per-transect audit table that distinguishes unique-root from
 multiple-root inversions.
 
+The canonical real-video CSV products can be recalculated directly from the
+deposited checkpoints and inputs with
+`code/data/videos/reproduce_video_derived_csvs.m`. The companion validator
+compares all 15 rebuilt CSV files with the deposited versions.
+
 ## Data availability
 
 Large inputs and derived products are kept in the associated Zenodo archive,
@@ -54,7 +59,8 @@ syn/
 
 videos/
 |-- inputs/
-`-- outputs/
+|-- checkpoints/
+`-- derived/
 ```
 
 The archive contains a SHA-256 manifest and provenance record. Its solver
@@ -76,6 +82,8 @@ Computing Toolbox.
 ```text
 .
 |-- code/
+|   |-- data/
+|   |   `-- videos/                 Canonical real-video CSV derivation
 |   |-- dependencies/              Shared MATLAB dependencies
 |   |-- figures/
 |   |   |-- figure_01/ ... figure_11/
